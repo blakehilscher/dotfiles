@@ -6,7 +6,7 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
   SOURCE="$(readlink "$SOURCE")"
   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
-DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+export DOTFILES_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 export EDITOR=/usr/bin/vi
 export PATH=$PATH:$HOME/bin
@@ -23,10 +23,13 @@ export PATH=$PATH:$EC2_HOME/bin
 export EC2_PRIVATE_KEY=$EC2_HOME/pk-blake.pem
 export EC2_CERT=$EC2_HOME/cert-blake.pem
 export EC2_SSH_PRIVATE_KEY=~/.ssh/quandl_3.pem
-export JAVA_HOME="`/usr/libexec/java_home`"
 
-[[ -s "$DIR/private/keys.bash" ]] && source "$DIR/private/keys.bash"
+[[ -s "/usr/libexec/java_home" ]] && export JAVA_HOME="`/usr/libexec/java_home`"
 
+# include private keys
+[[ -s "$DOTFILES_DIR/private/keys.bash" ]] && source "$DOTFILES_DIR/private/keys.bash"
+
+# include rvm
 rvm_project_rvmrc=1
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
