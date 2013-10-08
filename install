@@ -11,6 +11,7 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 ln -sf $DIR/bash_profile ~/.bash_profile
 ln -sf $DIR/bashrc ~/.bashrc
 ln -sf $DIR/gemrc ~/.gemrc
-ln -sf $DIR/vim ~/.vim
 ln -sf $DIR/vimrc ~/.vimrc
 ln -sf $DIR/gitignore_global ~/.gitignore_global
+
+if [ ! -d $HOME/.vim ]; then ln -s $DIR/vim $HOME/.vim > /dev/null 2>&1; fi
