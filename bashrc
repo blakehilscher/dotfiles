@@ -1,13 +1,5 @@
 [[ -s "/etc/bashrc" ]] && . /etc/bashrc
 
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
-  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-done
-export DOTFILES_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-
 export EDITOR=/usr/bin/vi
 export PATH=$PATH:$HOME/bin
 export PATH=/usr/local/bin:$PATH
@@ -27,7 +19,7 @@ export EC2_SSH_PRIVATE_KEY=~/.ssh/quandl_3.pem
 [[ -s "/usr/libexec/java_home" ]] && export JAVA_HOME="`/usr/libexec/java_home`"
 
 # include private keys
-[[ -s "$DOTFILES_DIR/private/keys.bash" ]] && source "$DOTFILES_DIR/private/keys.bash"
+[[ -s "$HOME/.private/keys.bash" ]] && source "$HOME/.private/keys.bash"
 
 # include rvm
 rvm_project_rvmrc=1
