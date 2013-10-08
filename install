@@ -1,4 +1,10 @@
 #!/bin/bash
+if [ -z "$1" ]
+then 
+  TARGET=$HOME
+else
+  TARGET=$1
+fi
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -8,10 +14,10 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-ln -sf $DIR/bash_profile $HOME/.bash_profile
-ln -sf $DIR/bashrc $HOME/.bashrc
-ln -sf $DIR/gemrc $HOME/.gemrc
-ln -sf $DIR/vimrc $HOME/.vimrc
-ln -sf $DIR/gitignore_global $HOME/.gitignore_global
+ln -sf $DIR/bash_profile $TARGET/.bash_profile
+ln -sf $DIR/bashrc $TARGET/.bashrc
+ln -sf $DIR/gemrc $TARGET/.gemrc
+ln -sf $DIR/vimrc $TARGET/.vimrc
+ln -sf $DIR/gitignore_global $TARGET/.gitignore_global
 
-if [ ! -d $HOME/.vim ]; then ln -s $DIR/vim $HOME/.vim > /dev/null 2>&1; fi
+if [ ! -d $TARGET/.vim ]; then ln -s $DIR/vim $TARGET/.vim > /dev/null 2>&1; fi
