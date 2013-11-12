@@ -10,8 +10,11 @@ function go()
   cm)
     cd ~/chef/11/;;
   g)
-    cd ~/www/gems
-    ;;
+    cd ~/www/gems;;
+  qc)
+    cd ~/www/gems/quandl_cassandra;;
+  qcm)
+    cd ~/www/gems/quandl_cassandra_models;;
   h)
     cd ~/www/hilscher/;;
   n)

@@ -27,11 +27,15 @@ alias m='mate .'
 alias o='open .'
 
 alias v='vagrant'
-alias vs='ssh root@192.168.33.10'
+alias vs='ssh blake@192.168.33.10'
 
 alias psg='ps aux | grep '
 alias pgrep='ps -ef | grep irssi | grep -v grep | awk ‘{print $2}’'
 alias break2comma='while read line; do echo -n "$line,"; done'
+
+alias forward_staging_pg='ssh -i "/Users/blake/.ssh/quandl_3.pem" -L 5558:localhost:5432 ubuntu@54.234.46.46'
+
+
 #--------------------------
 # Version Control Aliases
 #--------------------------
