@@ -11,6 +11,9 @@ function go()
     cd ~/chef/11/;;
   g)
     cd ~/www/gems;;
+  gq)
+    cd ~/www/gems/quandl;;
+
   qc)
     cd ~/www/gems/quandl_cassandra;;
   qcm)
@@ -112,6 +115,21 @@ function gem_publish (){
   git push --tags
   git push origin master
   gem_push
+}
+
+function test_quandl_gems (){
+  gems=(logger operation data babelfish cassandra cassandra_models client format command)
+  # iterate over each gem
+  for gem in ${gems[@]}; do
+    echo "Running quandl/${gem}"
+    gem_test "quandl/${gem}" | tail -2
+    echo "---"
+  done
+}
+
+function gem_test (){
+  echo "Running $1"
+  cd "$BUNDLE_LOCAL_DIR/$1" && lbspec
 }
 
 function pbcat () {

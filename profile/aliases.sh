@@ -4,6 +4,7 @@
 
 alias r='ruby'
 alias b='bundle exec'
+alias lb='BUNDLE_LOCAL_GEMS=true bundle exec'
 alias br='bundle exec ruby'
 alias tf='tail -f'
 
@@ -34,7 +35,6 @@ alias pgrep='ps -ef | grep irssi | grep -v grep | awk ‘{print $2}’'
 alias break2comma='while read line; do echo -n "$line,"; done'
 
 alias forward_staging_pg='ssh -i "/Users/blake/.ssh/quandl_3.pem" -L 5558:localhost:5432 ubuntu@54.234.46.46'
-
 
 #--------------------------
 # Version Control Aliases
@@ -73,6 +73,9 @@ alias gitcos='gitco staging'
 alias gitcor='gitco release'
 alias gitcom='gitco master'
 alias gitsma='git submodule add'
+
+alias bspec='b rspec --color -f d'
+alias lbspec='lb rspec --color -f d'
 
 # Git Flow
 alias gitfs='git flow feature start '
@@ -131,7 +134,7 @@ alias chef-client-staging='knssh "role:quandl_app_server AND chef_environment:st
 # RVM
 alias rvmrc='rvm --rvmrc --create'
 alias bundle!='gem install bundler;bundle;'
-alias gem_test='rm *.gem; gem build *.gemspec; gem install ./*.gem; pry'
+alias lbundle='BUNDLE_LOCAL_GEMS=true bundle'
 alias gem_push='rm *.gem; gem build *.gemspec; gem push *.gem'
 
 alias vmizuno='APP_ENV=vagrant mizuno'
