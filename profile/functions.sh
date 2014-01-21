@@ -2,7 +2,7 @@ function parse_git_branch {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
-function go()
+function g()
 {
   case $1 in
   c)
@@ -33,6 +33,9 @@ function go()
   s)
     cd ~/user_settings/;;
   esac
+  if [ $2 ];then
+    cd $2
+  fi
 }
 
 #-------------------------------------------------------------
@@ -117,19 +120,44 @@ function gem_publish (){
   gem_push
 }
 
-function test_quandl_gems (){
+function quandl_gems_bundle_update () {
   gems=(logger operation data babelfish cassandra cassandra_models client format command)
   # iterate over each gem
   for gem in ${gems[@]}; do
-    echo "Running quandl/${gem}"
-    gem_test "quandl/${gem}" | tail -2
+    echo "bundle update quandl/${gem}"
+    cd "$BUNDLE_LOCAL_DIR/quandl/${gem}" && bundle update | tail -1
     echo "---"
   done
 }
 
-function gem_test (){
+function quandl_gems_lbspec (){
+  gems=(logger operation data babelfish cassandra cassandra_models client format command)
+  # iterate over each gem
+  for gem in ${gems[@]}; do
+    echo "Running quandl/${gem}"
+    quandl_gem_lbspec "quandl/${gem}" | tail -2
+    echo "---"
+  done
+}
+
+function quandl_gems_bspec (){
+  gems=(logger operation data babelfish cassandra cassandra_models client format command)
+  # iterate over each gem
+  for gem in ${gems[@]}; do
+    echo "Running quandl/${gem}"
+    quandl_gem_bspec "quandl/${gem}" | tail -2
+    echo "---"
+  done
+}
+
+function quandl_gem_lbspec (){
   echo "Running $1"
   cd "$BUNDLE_LOCAL_DIR/$1" && lbspec
+}
+
+function quandl_gem_bspec (){
+  echo "Running $1"
+  cd "$BUNDLE_LOCAL_DIR/$1" && bspec
 }
 
 function pbcat () {

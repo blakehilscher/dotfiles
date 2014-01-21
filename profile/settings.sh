@@ -22,3 +22,8 @@ shopt -u mailwarn
 unset MAILCHECK         # Don't want my shell to warn me of incoming mail.
 
 export GREP_OPTIONS='--color=auto'
+
+# export GOVERSION="1.1"
+# export GOROOT=$(brew --prefix)/Cellar/go/$GOVERSION
+export PATH=$PATH:$GOPATH/bin
+export GOPATH=$HOME/golang
