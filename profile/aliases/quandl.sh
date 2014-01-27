@@ -41,3 +41,14 @@ function quandl_gem_bspec (){
   echo "Running $1"
   cd "$BUNDLE_LOCAL_DIR/$1" && bspec
 }
+
+function quandl_ssh_staging_cassandra (){
+  newtab eval "knife into staging-cassandra-1.1"
+  newtab eval "cd ~/Library/Application\ Support; ls"
+  
+  newtab knife into staging-cassandra-1.2
+  newtab knife into staging-cassandra-2.1
+  newtab knife into staging-cassandra-2.2
+  newtab knife into staging-cassandra-3.1
+  newtab knife into staging-cassandra-3.2
+}
