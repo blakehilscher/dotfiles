@@ -43,10 +43,10 @@ function quandl_gem_bspec (){
 }
 
 function quandl_ssh_staging_cassandra (){
-  newtab "knife into staging-cassandra-1.2"
-  newtab "knife into staging-cassandra-2.1"
-  newtab "knife into staging-cassandra-2.2"
-  newtab "knife into staging-cassandra-3.1"
-  newtab "knife into staging-cassandra-3.2"
+  split_horizontal "knife into staging-cassandra-1.2" 
+  split_horizontal "knife into staging-cassandra-2.1"
+  split_vertical "knife into staging-cassandra-2.2"
+  split_horizontal "knife into staging-cassandra-3.1"
+  split_horizontal "knife into staging-cassandra-3.2"
   knife into staging-cassandra-1.1
 }

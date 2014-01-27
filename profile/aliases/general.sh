@@ -22,7 +22,9 @@ alias psg='ps aux | grep '
 alias pgrep='ps -ef | grep irssi | grep -v grep | awk ‘{print $2}’'
 alias break2comma='while read line; do echo -n "$line,"; done'
 
-
+alias sph="split_horizontal"
+alias spv="split_vertical"
+alias nt="newtab"
 
 #-------------------------------------------------------------
 # The 'ls' family (this assumes you use a recent GNU ls)
