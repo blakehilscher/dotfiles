@@ -14,3 +14,5 @@ source "$DOTFILES_DIR/profile/colors.sh"
 source "$DOTFILES_DIR/profile/functions.sh"
 
 [[ -s "$HOME/.remote_profile" ]] && source "$HOME/.remote_profile"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
