@@ -43,10 +43,13 @@ function quandl_gem_bspec (){
 }
 
 function quandl_ssh_staging_cassandra (){
-  split_horizontal "knife into staging-cassandra-1.2" 
-  split_horizontal "knife into staging-cassandra-2.1"
-  split_vertical "knife into staging-cassandra-2.2"
-  split_horizontal "knife into staging-cassandra-3.1"
-  split_horizontal "knife into staging-cassandra-3.2"
+  split_pane_vertical "knife into staging-cassandra-1.2" 
+  split_pane_horizontal "knife into staging-cassandra-2.2"
+  split_pane_horizontal "knife into staging-cassandra-3.2"
+  select_pane_left
+  split_pane_horizontal "knife into staging-cassandra-2.1"
+  split_pane_horizontal "knife into staging-cassandra-3.1"
+  select_pane_above
+  select_pane_above
   knife into staging-cassandra-1.1
 }
