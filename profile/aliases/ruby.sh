@@ -25,11 +25,3 @@ alias restartnginx='stopnginx; startnginx'
 
 alias restart_unicorn_rails='test -s "/var/run/unicorn/master.pid" && kill `cat /var/run/unicorn/master.pid`
 bundle exec unicorn -c /etc/unicorn.cfg -D'
-
-function gem_publish (){
-  gitcam "Release $1. $2"
-  git tag -a $1 -m "$2"
-  git push --tags
-  git push origin master
-  gem_push
-}

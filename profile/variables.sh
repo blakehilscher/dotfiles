@@ -1,5 +1,6 @@
-export GHIL=gitolite@hilscher.ca
-export GHUB=git@github.com:blakehilscher
-export GQ=git@github.com:quandl/
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export BUNDLE_LOCAL_DIR=/Users/blake/www/gems/
+for file in $DIR/variables/*.sh; do
+  source "$file"
+done
+unset file
