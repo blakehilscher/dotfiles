@@ -37,6 +37,10 @@ function g()
     cd $2
   fi
 }
+function bg_exec() {
+  LOG="$HOME/logs/bg_exec.log"
+  eval "$1 >> $LOG &"
+}
 
 function each()
 {
@@ -46,8 +50,8 @@ function each()
   args=("$@")
   for ((i=1; i < $#; i++)) {
     DIR="$SRC_DIR/${args[$i]}"
-    echo -e "\n${COLOR_LIGHT_GRAY}---- $(pwd) $COLOR_GREEN"
-    eval "cd $DIR; $COMMAND"
+    result=$(eval "cd $DIR; $COMMAND")
+    echo -e "\n${COLOR_LIGHT_GRAY}---- $DIR $COLOR_GREEN\n $result"
   }
   cd $SRC_DIR
 }

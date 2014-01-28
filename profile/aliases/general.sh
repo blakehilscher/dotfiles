@@ -54,3 +54,5 @@ alias lag='la | grep -i '  # filter list by string
 alias xs='cd'
 alias vf='cd'
 alias kk='ll'
+
+alias bge="bg_exec"
