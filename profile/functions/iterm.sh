@@ -1,7 +1,15 @@
-select_pane_above(){ tell_iterm 'tell application "System Events" to keystroke (ASCII character 30) using {command down, option down}' }
-select_pane_below(){ tell_iterm 'tell application "System Events" to keystroke (ASCII character 31) using {command down, option down}' }
-select_pane_left(){ tell_iterm 'tell application "System Events" to keystroke (ASCII character 28) using {command down, option down}' }
-select_pane_right(){ tell_iterm 'tell application "System Events" to keystroke (ASCII character 29) using {command down, option down}' }
+select_pane_above(){
+  tell_iterm 'tell application "System Events" to keystroke (ASCII character 30) using {command down, option down}'
+}
+select_pane_below(){
+  tell_iterm 'tell application "System Events" to keystroke (ASCII character 31) using {command down, option down}'
+}
+select_pane_left(){
+  tell_iterm 'tell application "System Events" to keystroke (ASCII character 28) using {command down, option down}'
+}
+select_pane_right(){
+  tell_iterm 'tell application "System Events" to keystroke (ASCII character 29) using {command down, option down}'
+}
 
 split_pane_horizontal(){
 CURRENT_DIR=$(pwd)
