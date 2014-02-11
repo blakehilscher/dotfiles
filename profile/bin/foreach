@@ -3,14 +3,15 @@
 
 statement = ARGV.join(' ').split(" do ")
 
-if statement[0] =~ /,/ && statement[1].to_s.strip.rstrip != ''
+if statement[0] =~ /,/
 
-  args = statement[0].split(',')
-  command = statement[1]
+  args = statement.shift.split(',')
+  command = statement.join(" do ")
 
   args.each do |arg|
     begin
       run = command.gsub("@1", arg)
+      puts run
       system( "#{run} &" )
     rescue => err
     end
