@@ -36,15 +36,14 @@ function g()
 
 function quandl_ssh_cassandra () {
   NAME="$1-cassandra"
+  new_window "knife into $NAME-1.1"
   split_pane_vertical "knife into $NAME-1.2"
   split_pane_horizontal "knife into $NAME-2.2"
   split_pane_horizontal "knife into $NAME-3.2"
   select_pane_left
   split_pane_horizontal "knife into $NAME-2.1"
   split_pane_horizontal "knife into $NAME-3.1"
-  select_pane_above
-  select_pane_above
-  knife into $NAME-1.1
+  broadcast_input_to_panes
 }
 
 function quandl_gems_bundle_update () {

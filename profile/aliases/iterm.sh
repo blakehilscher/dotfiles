@@ -7,3 +7,4 @@ alias sph="split_pane_horizontal"
 alias spv="split_pane_vertical"
 
 alias nt="newtab"
+alias nw="new_window"

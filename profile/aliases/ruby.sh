@@ -8,7 +8,6 @@ alias lbspec='lb rspec --color -f d'
 
 alias bundle!='gem install bundler;bundle;'
 alias lbundle='BUNDLE_LOCAL_GEMS=true bundle'
-alias gem_push='rm *.gem; gem build *.gemspec; gem push *.gem'
 
 alias vmizuno='APP_ENV=vagrant mizuno'
 alias vrails='RAILS_ENV=vagrant rails'

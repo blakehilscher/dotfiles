@@ -15,4 +15,6 @@ source "$DOTFILES_DIR/profile/functions.sh"
 
 [[ -s "$HOME/.remote_profile" ]] && source "$HOME/.remote_profile"
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function
+# Added by Quandl Toolbelt
+PATH="/usr/local/quandl/bin:$PATH"

@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+require 'pry'
+
+statement = ARGV.join(' ').split(" do ")
+
+if statement[0] =~ /,/ && statement[1].to_s.strip.rstrip != ''
+
+  args = statement[0].split(',')
+  command = statement[1]
+
+  args.each do |arg|
+    begin
+      run = command.gsub("@1", arg)
+      system( "#{run} &" )
+    rescue => err
+    end
+  end
+  
+end
