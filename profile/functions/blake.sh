@@ -86,3 +86,7 @@ function quandl_gem_bspec (){
   echo "Running $1"
   cd "$BUNDLE_LOCAL_DIR/$1" && bspec
 }
+
+function quandl_profile(){
+  ln -sf /Users/blake/.quandl/$1 /Users/blake/.quandl/config
+}
