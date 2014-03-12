@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+how_many = ARGV[0].nil? ? -1 : ARGV[0].to_i
+
+speed = ARGV[1].nil? ? 0.1 : ARGV[1].to_f
+
+sleep( 2 )
+puts 'started'
+
+while how_many != 0
+  timeout = (rand(15) / 100.0) + speed
+  system('cliclick c:500,500')
+  puts 'click'
+  sleep(timeout)
+  how_many = how_many - 1
+end
