@@ -46,3 +46,7 @@ alias giths='git flow hotfix start '
 alias githf='git flow hotfix finish '
 alias gitrs='git flow release start '
 alias gitrf='git flow release finish '
+
+function gitcof () { 
+  git checkout "feature/$1" 
+}

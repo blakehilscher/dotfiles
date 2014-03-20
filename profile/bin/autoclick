@@ -2,8 +2,7 @@
 # encoding: UTF-8
 
 how_many = ARGV[0].nil? ? -1 : ARGV[0].to_i
-
-speed = ARGV[1].nil? ? 0.1 : ARGV[1].to_f
+speed = ARGV[1].nil? ? 0.6 : ARGV[1].to_f
 
 sleep( 2 )
 puts 'started'

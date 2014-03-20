@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+with = ARGV.pop
+
+ARGV.each do |file|
+  command = "mv #{file} #{file}#{with}"
+  puts "#{command}"
+  %x{#{command}}
+end
