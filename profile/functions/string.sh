@@ -33,7 +33,12 @@ function swap()  # Swap 2 filenames around, if they exist
     mv $TMPFILE "$2"
 }
 
-function extract()      # Handy Extract Program.
+function compress()
+{
+  tar -cvzf $1.tar.gz $1
+}
+
+function extract()
 {
      if [ -f $1 ] ; then
          case $1 in
