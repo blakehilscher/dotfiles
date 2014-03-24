@@ -16,11 +16,20 @@ class PushBullet
     self.options = args.extract_options!
   end
   
-  def push(id, title, body=nil)
-    # body default
+  def push(type, id, title, body=nil)
+    # format
+    data = push_format( type, id, title, body )
+    # send
+    resources.pushes.post( data )
+  end
+  
+  def push_format(type, id, title, body=nil)
     body = title if body.nil?
-    # send the request
-    resources.pushes.post( { device_iden: id, title: title, body: body, type: 'note' } )
+    case type
+    when 'note'     then { device_iden: id, title: title, body: body, type: type }
+    when 'link'     then { device_iden: id, title: title, url: body, type: type }
+    when 'address'  then { device_iden: id, name: title, address: body, type: type }
+    end
   end
   
   def devices
@@ -42,10 +51,11 @@ end
 
 pb = PushBullet.new( user: ENV['PUSHBULLET_API_KEY'], password: ENV['PUSHBULLET_API_SECRET'] )
 
-title, message = ARGV[0], ARGV[1]
+type, title, body = ARGV[0], ARGV[1], ARGV[2]
 
-if title.present?
-  pb.push(ENV['PUSHBULLET_DEVICE_ID'], title, message)
-else
-  puts pb.devices
+if title.blank? && type.present?
+  title = type
+  type = 'note'
 end
+
+pb.push(type, ENV['PUSHBULLET_DEVICE_ID'], title, body) if title.present?
