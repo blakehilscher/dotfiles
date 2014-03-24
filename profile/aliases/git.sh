@@ -38,6 +38,7 @@ alias gitcod='gitco develop'
 alias gitcos='gitco staging'
 alias gitcor='gitco release'
 alias gitcom='gitco master'
+alias gitcob='gitco -b '
 
 # Git Flow
 alias gitfs='git flow feature start '
@@ -46,6 +47,8 @@ alias giths='git flow hotfix start '
 alias githf='git flow hotfix finish '
 alias gitrs='git flow release start '
 alias gitrf='git flow release finish '
+
+
 
 function gitcof () { 
   git checkout "feature/$1" 

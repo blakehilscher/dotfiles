@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+branch = ARGV[0].to_s.strip.rstrip
+
+if branch == ''
+  STDERR.puts "branch pattern needed"
+  exit
+end
+
+branches = %x{ git branch }.strip.rstrip.split("\n")
+
+branches.each do |b|
+  b = b.strip.rstrip
+  next if b[0] == '*'
+  if b =~ /#{branch}/
+    c = "git checkout #{b}"
+    system(c)
+    exit
+  end
+end
+
+puts "No branch matches '#{branch}'"
