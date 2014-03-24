@@ -32,10 +32,6 @@ class PushBullet
     end
   end
   
-  def pushes
-    JSON.parse(resources.pushes.get)
-  end
-  
   def devices
     @devices ||= JSON.parse(resources.devices.get)['devices'].collect{|d| OpenStruct.new(d) }
   end
