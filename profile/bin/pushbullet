@@ -32,6 +32,10 @@ class PushBullet
     end
   end
   
+  def pushes
+    JSON.parse(resources.pushes.get)
+  end
+  
   def devices
     @devices ||= JSON.parse(resources.devices.get)['devices'].collect{|d| OpenStruct.new(d) }
   end
@@ -53,9 +57,15 @@ pb = PushBullet.new( user: ENV['PUSHBULLET_API_KEY'], password: ENV['PUSHBULLET_
 
 type, title, body = ARGV[0], ARGV[1], ARGV[2]
 
-if title.blank? && type.present?
-  title = type
-  type = 'note'
-end
+if type == 'devices'
+  puts pb.devices
+  
+else
+  
+  if title.blank? && type.present?
+    title = type
+    type = 'note'
+  end
 
-pb.push(type, ENV['PUSHBULLET_DEVICE_ID'], title, body) if title.present?
+  pb.push(type, ENV['PUSHBULLET_DEVICE_ID'], title, body) if title.present?
+end
