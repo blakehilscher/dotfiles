@@ -52,3 +52,5 @@ alias vf='cd'
 alias kk='ll'
 
 alias bge="bg_exec"
+
+alias pb='pushbullet'
