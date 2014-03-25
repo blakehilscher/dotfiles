@@ -16,7 +16,6 @@ alias gitfiles='git show --pretty="format:" --name-only '
 alias gitexport='git archive --format zip --output source-tree-master.zip master '
 
 # Push / Pull
-alias gcl='git clone '
 alias gpso='git push origin '
 alias gplo='git pull origin '
 alias gpsom='gpso master'

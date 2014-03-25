@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+url = ARGV[0].to_s.strip.rstrip
+url = "git@github.com:#{url}.git" unless url =~ /@/
+
+system("git clone #{url}")
