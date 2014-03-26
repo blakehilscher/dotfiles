@@ -3,3 +3,5 @@ alias quandl_reinstall_gems='for i in [command format client data babelfish oper
 alias q='quandl'
 
 alias ki='knife into '
+
+alias g='goto'
