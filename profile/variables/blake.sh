@@ -1,0 +1,1 @@
+export CHEF_REPO_PATH="/Users/blake/www/quandl/chef-repo/"
