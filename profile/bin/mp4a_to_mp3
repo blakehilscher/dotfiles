@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+# with = ARGV.pop
+
+require 'thread/pool'
+
+def pool
+  @pool ||= Thread.pool(8)
+end
+
+def process(file)
+  pool.process{
+    process_file(file)
+  }
+end
+
+def process_file(file)
+  puts "\n--\n\nprocess '#{file}'"
+  file = file.to_s.strip.rstrip
+  new_name = File.basename(file, '.m4a').to_s + '.mp3'
+  sh %Q{ ffmpeg -i "#{file}" -acodec libmp3lame -ab 320k "#{new_name}" -y }
+end
+
+def sh(c)
+  puts "sh #{c}"
+  %x{#{c}}
+end
+
+if ARGV.empty?
+  $stdin.each_line{|f| process(f) }
+  $stdin.close
+else
+  ARGV.each{|f| process(f) }
+end
+
+pool.shutdown
+exit

@@ -19,6 +19,8 @@ class PushBullet
   def push(type, id, title, body=nil)
     # format
     data = push_format( type, id, title, body )
+    # fail
+    raise ArgumentError, "#{type} #{data} is invalid" unless data.is_a?(Hash)
     # send
     resources.pushes.post( data )
   end
@@ -51,17 +53,15 @@ end
 
 pb = PushBullet.new( user: ENV['PUSHBULLET_API_KEY'], password: ENV['PUSHBULLET_API_SECRET'] )
 
-type, title, body = ARGV[0], ARGV[1], ARGV[2]
+if ARGV[2].blank?
+  type = 'note'
+  title, body = ARGV[0], ARGV[1]
+else
+  type, title, body = ARGV[0], ARGV[1], ARGV[2]
+end
 
 if type == 'devices'
   puts pb.devices
-  
 else
-  
-  if title.blank? && type.present?
-    title = type
-    type = 'note'
-  end
-
   pb.push(type, ENV['PUSHBULLET_DEVICE_ID'], title, body) if title.present?
 end
