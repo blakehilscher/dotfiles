@@ -1,3 +1,3 @@
 function goto () {
-  cd $(ruby ~/bin/goto.rb $@)
+  cd "$(ruby ~/bin/goto.rb $@)"
 }
