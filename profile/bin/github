@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+url = `git config --get remote.origin.url`
+branch = `git branch | grep '*'`.gsub('* ','').strip.rstrip
+github_url = url.split(':').last.gsub('.git','').strip.rstrip
+github_url = "http://github.com/#{github_url}/tree/#{branch}"
+puts "open '#{github_url}'"
+`open '#{github_url}'`
