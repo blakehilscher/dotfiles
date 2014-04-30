@@ -49,3 +49,8 @@ alias gitrf='git flow release finish '
 
 alias gcl='git_clone'
 alias grco='git_regex_checkout'
+
+alias git_prune_master_branches="git branch --merged master | grep -v 'master$' | xargs git branch -d"
+
+alias gpsoh='git push origin HEAD'
+alias gco='git_regex_checkout'

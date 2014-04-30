@@ -6,6 +6,7 @@ export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/sbin:$PATH
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH=$JRUBY_HOME/bin:$PATH
+export PATH="/usr/local/share/npm/bin:$PATH"
 
 export NODE_PATH=/usr/local/lib/node_modules:$NODE_PATH
 

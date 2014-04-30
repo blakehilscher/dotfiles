@@ -5,3 +5,6 @@ alias q='quandl'
 alias ki='knife into '
 
 alias g='goto'
+
+alias rsync_music='rsync -Lavz -e "ssh -o UserKnownHostsFile=/dev/null,StrictHostKeyChecking=no" --progress --no-owner --no-perms --no-g --omit-dir-times /Users/blake/Music/Android phone:/mnt/extSdCard/Music/'
+

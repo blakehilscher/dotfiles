@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+# with = ARGV.pop
+
+require 'active_support/all'
+require 'open-uri'
+
+query = {
+  action:         'advanced',
+  artistname:     '',
+  groupname:      '',
+  tags_type:      '',
+  order_by:       'time',
+  order_way:      'desc',
+  group_results:  '1',
+  searchsubmit:   '1',
+}
+
+query[:artistname] = ARGV[0] if ARGV[0].present?
+query[:groupname] = ARGV[1] if ARGV[1].present?
+
+provider = "https://what.cd/torrents.php?#{query.to_query}#torrent_table"
+
+`open '#{provider}'`
