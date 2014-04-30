@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+URL = 'https://quandljira.atlassian.net/browse/'
+
+command = ARGV[0]
+
+branch = `git branch | grep '*'`.gsub('* ','').strip.rstrip
+jira_id = branch.split("/").first
+
+url = File.join( URL, jira_id )
+
+puts "open '#{url}'"
+`open '#{url}'`

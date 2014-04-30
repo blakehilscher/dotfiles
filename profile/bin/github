@@ -1,9 +1,19 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
+command = ARGV[0]
+
 url = `git config --get remote.origin.url`
 branch = `git branch | grep '*'`.gsub('* ','').strip.rstrip
 github_url = url.split(':').last.gsub('.git','').strip.rstrip
-github_url = "http://github.com/#{github_url}/tree/#{branch}"
+
+if command == 'pr'
+  github_url = "http://github.com/#{github_url}/compare/#{branch.gsub('/',';')}?expand=1"
+  
+else
+  github_url = "http://github.com/#{github_url}/tree/#{branch}"
+  
+end
+
 puts "open '#{github_url}'"
 `open '#{github_url}'`

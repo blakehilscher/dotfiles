@@ -1,7 +1,3 @@
-function jira () {
-  open "https://quandljira.atlassian.net/browse/$1"
-}
-
 function quandl_ssh_cassandra () {
   NAME="$1-cassandra"
   new_window "knife into $NAME-1.1"
