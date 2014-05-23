@@ -3,17 +3,20 @@
 
 command = ARGV[0]
 
-url = `git config --get remote.origin.url`
-branch = `git branch | grep '*'`.gsub('* ','').strip.rstrip
-github_url = url.split(':').last.gsub('.git','').strip.rstrip
-
-if command == 'pr'
-  github_url = "http://github.com/#{github_url}/compare/#{branch.gsub('/',';')}?expand=1"
+def url_for_command(command)
+  git_url = `git config --get remote.origin.url`
+  branch = `git branch | grep '*'`.gsub('* ','').strip.rstrip
+  url = git_url.split(':').last.gsub('.git','').strip.rstrip
   
-else
-  github_url = "http://github.com/#{github_url}/tree/#{branch}"
-  
+  case command.to_s.to_sym
+  when :pr        then "http://github.com/#{url}/compare/#{branch.gsub('/',';')}?expand=1"
+  when :pulls     then "http://github.com/#{url}/pulls"
+  else 
+    "http://github.com/#{url}/tree/#{branch}"
+  end
 end
 
-puts "open '#{github_url}'"
-`open '#{github_url}'`
+url = url_for_command(command)
+
+puts "open '#{url}'"
+`open '#{url}'`

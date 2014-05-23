@@ -29,3 +29,5 @@ rvm_project_rvmrc=1
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+### Added by the Quandl Toolbelt
+export PATH="/usr/local/quandl/bin:$PATH"

@@ -24,6 +24,7 @@ def goto_expression(exp)
 end
 
 def goto_dir(match)
+  return Dir.chdir(match) if Dir.exists?(match)
   
   dirs = Dir['*'].select{|d| File.directory?(d) }.sort_by{|k,v| k.length }
   dirs_hash = dirs.inject({}){|m,d| m[d] = d.downcase.gsub(/[-_ ]+/,''); m }
@@ -35,7 +36,8 @@ def goto_dir(match)
   end
   location = dirs_hash.keys.first
   if location.nil?
-    raise "nothing matched #{match} in #{`pwd`}"
+    puts "nothing matched: '#{match}' in: #{`pwd`}"
+    false
   else
     Dir.chdir(location)
   end
