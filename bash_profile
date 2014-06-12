@@ -12,6 +12,7 @@ source "$DOTFILES_DIR/profile/variables.sh"
 source "$DOTFILES_DIR/profile/aliases.sh"
 source "$DOTFILES_DIR/profile/colors.sh"
 source "$DOTFILES_DIR/profile/functions.sh"
+source "$DOTFILES_DIR/profile/completion.sh"
 
 [[ -s "$HOME/.remote_profile" ]] && source "$HOME/.remote_profile"
 
