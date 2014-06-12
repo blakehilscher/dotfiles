@@ -20,5 +20,6 @@ ln -sf $DIR/bashrc $TARGET/.bashrc
 ln -sf $DIR/gemrc $TARGET/.gemrc
 ln -sf $DIR/vimrc $TARGET/.vimrc
 ln -sf $DIR/gitignore_global $TARGET/.gitignore_global
+cp -r $DIR/customize/ $TARGET/.customize_profile/
 
 if [ ! -d $TARGET/.vim ]; then ln -s $DIR/vim $TARGET/.vim > /dev/null 2>&1; fi
