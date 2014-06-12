@@ -1,4 +1,7 @@
-[[ -s "$HOME/.colors" ]] && source "$HOME/.colors"
+for file in $HOME/.customize_profile/*.sh; do
+  source "$file"
+done
+unset file
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink

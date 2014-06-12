@@ -7,4 +7,4 @@ export COLOR_LIGHT_GREEN="\[\033[1;32m\]"
 export COLOR_WHITE="\[\033[1;37m\]"
 export COLOR_LIGHT_GRAY="\[\033[0;37m\]"
 
-export PROMPT_COLOR=$YELLOW
+export PROMPT_COLOR=$COLOR_YELLOW
