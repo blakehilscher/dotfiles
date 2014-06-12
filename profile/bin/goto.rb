@@ -19,7 +19,10 @@ def goto_expression(exp)
     dir.gsub!(/^\~/, ENV['HOME'])
     Dir.chdir( dir )
   else
-    raise "no expression #{exp} in (#{expressions.keys.join(', ')})"
+    puts "\n"
+    puts expressions.collect{|k,v| "#{k.to_s.ljust(5)} #{v} \n" }.join
+    puts "\n"
+    exit
   end
 end
 
