@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+if ARGV.length <= 2
+  puts "USAGE: rename * JPG jpg"
+else
+  new_pattern = ARGV.pop
+  old_pattern = ARGV.pop
+
+  ARGV.each do |file|
+    pattern = /#{old_pattern}/
+    next unless file =~ pattern
+    new_name = file.gsub( pattern, new_pattern )
+    command = "mv #{file} #{new_name}"
+    puts "#{command}"
+    %x{#{command}}
+  end
+end
