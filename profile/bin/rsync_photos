@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+dir = File.basename(File.expand_path('.'))
+command = "rsync -avz . www@hilscher.ca:/var/www/photos.hilscher.ca/#{dir} "
+puts command
+system(command)

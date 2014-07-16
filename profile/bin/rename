@@ -10,8 +10,9 @@ else
   ARGV.each do |file|
     pattern = /#{old_pattern}/
     next unless file =~ pattern
-    new_name = file.gsub( pattern, new_pattern )
-    command = "mv #{file} #{new_name}"
+    new_name = file.gsub( pattern, new_pattern ).gsub('"','\"')
+    old_name = file.gsub('"','\"')
+    command = %Q{mv "#{old_name}" "#{new_name}"}
     puts "#{command}"
     %x{#{command}}
   end
