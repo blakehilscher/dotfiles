@@ -1,13 +1,21 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
+require 'yaml'
 
-gallery_dir = ARGV[0] || 'gallerize'
+config = { 'output_name' => 'gallerize' }
+
+if File.exists?('.gallerize')
+  config = YAML.load(File.read('.gallerize'))
+end
 
 dir = File.basename(File.expand_path('.'))
 
+gallery_dir = config['output_name']
+server_dir = config['server_dir'] || dir
+
 puts "chdir #{gallery_dir}"
 Dir.chdir(gallery_dir) do |f|
-  command = "rsync -avz . www@hilscher.ca:/var/www/photos.hilscher.ca/#{dir}"
+  command = "rsync -avz . www@hilscher.ca:/var/www/photos.hilscher.ca/#{server_dir}"
   puts command
   system(command)
 end

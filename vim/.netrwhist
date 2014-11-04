@@ -1,6 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_cnt =5
 let g:netrw_dirhist_1='/Users/blake/test'
 let g:netrw_dirhist_2='/Users/blake/www/quandl/wikiposit/config'
 let g:netrw_dirhist_3='/Users/blake/www/hilscher/gitolite-admin'
 let g:netrw_dirhist_4='/Users/blake/.ssh'
+let g:netrw_dirhist_5='/Users/blakehilscher/dotfiles/profile'

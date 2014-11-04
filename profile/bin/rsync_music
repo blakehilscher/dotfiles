@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+require 'yaml'
+require 'active_support/all'
+require 'parallel'
+require 'pry'
+
+remote_root = "/var/www/music.hilscher.ca/"
+
+I18n.enforce_available_locales = false
+
+def bash(command)
+  puts command
+  system(command)
+  true
+end
+
+def mkdir_p(path)
+  @paths ||= {}
+  @paths[path] ||= bash(%Q{ssh www@hilscher.ca mkdir -p "#{path}"})
+end
+puts "ARGV: #{ARGV}"
+
+folders = ARGV.present? ? ARGV : STDIN.read.split("\n")
+folders = folders.collect{|f| f.to_s.strip.rstrip }.compact.reject{|s| s.blank? || s == '.' || s == '..' || s == '/' }
+
+# Parallel.map(folders, in_processes: 4) do |arg|
+folders.each do |arg|
+  Dir.glob(arg).each do |folder|
+    if File.directory?(folder)
+      Dir.chdir(folder) do |d|
+        Dir.glob('*').each do |file|
+          file_parameterized = file.split("/").collect{|f| f.parameterize }.join('/')
+          remote_dir = File.dirname(File.join(remote_root, folder.parameterize, file_parameterized))
+          remote_file = File.basename(file_parameterized)
+          mkdir_p remote_dir
+          bash %Q{rsync -azv "#{file}" www@hilscher.ca:"#{remote_dir}/#{remote_file}"}
+        end
+      end
+    end
+  end
+end

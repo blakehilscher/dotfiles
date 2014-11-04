@@ -38,7 +38,7 @@ alias gitcos='gitco staging'
 alias gitcor='gitco release'
 alias gitcom='gitco master'
 alias gitcob='gitco -b '
-
+alias pbgitl='git log --abbrev-commit --pretty=oneline | head -2 | pbcopy'
 # Git Flow
 alias gitfs='git flow feature start '
 alias gitff='git flow feature finish '
