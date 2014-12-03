@@ -17,7 +17,7 @@ alias gitexport='git archive --format zip --output source-tree-master.zip master
 
 # Push / Pull
 alias gpso='git push origin '
-alias gplo='git pull origin '
+alias gplo='git pull --rebase origin '
 alias gpsom='gpso master'
 alias gplom='gplo master'
 alias gplos='gplo staging'
@@ -52,6 +52,4 @@ alias grco='git_regex_checkout'
 
 alias git_prune_master_branches="git branch --merged master | grep -v 'master$' | xargs git branch -d"
 
-alias gps='git push origin HEAD'
-alias gpl='git pull origin HEAD'
 alias gco='git_regex_checkout'

@@ -1,21 +1,28 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 require 'yaml'
+require 'fileutils'
 
-config = { 'output_name' => 'gallerize' }
+include FileUtils::Verbose
 
-if File.exists?('.gallerize')
-  config = YAML.load(File.read('.gallerize'))
+def bash(c)
+  puts(c)
+  system(c)
 end
 
-dir = File.basename(File.expand_path('.'))
+# default config
+config = {
+  'local_path' => './gallerize',
+  'remote_path' => 'www@hilscher.ca:/var/www/photos.hilscher.ca/'
+}
+# local config
+config = YAML.load(File.read('.rsync_photos')) if File.exists?('.rsync_photos')
 
-gallery_dir = config['output_name']
-server_dir = config['server_dir'] || dir
+local_path = File.expand_path(config['local_path'])
+remote_path = config['remote_path']
+remote_dir = config['remote_dir'] || File.basename(File.expand_path('.'))
 
-puts "chdir #{gallery_dir}"
-Dir.chdir(gallery_dir) do |f|
-  command = "rsync -avz . www@hilscher.ca:/var/www/photos.hilscher.ca/#{server_dir}"
-  puts command
-  system(command)
+chdir(local_path) do |f|
+  remote = File.join(remote_path, remote_dir)
+  bash "rsync -avz . #{remote}"
 end
