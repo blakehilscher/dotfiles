@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+require 'yaml'
+require 'fileutils'
+
+include FileUtils::Verbose
+
+def bash(c)
+  puts(c)
+  system(c)
+end
+
+if !File.exists?('.qsync')
+  puts "You must create a .qsync file"
+else
+
+  configs = YAML.load(File.read('.qsync'))
+  configs.each do |name, config|
+    local_path = config['local']
+    remote_path = config['remote']
+    chdir(local_path) do |f|
+      puts "qsyncing #{name} #{local_path} to #{remote_path}"
+      bash "rsync -avz . #{remote_path}"
+    end
+  end
+end
