@@ -17,7 +17,8 @@ alias gitexport='git archive --format zip --output source-tree-master.zip master
 
 # Push / Pull
 alias gpso='git push origin '
-alias gplo='git pull --rebase origin '
+alias gpl='git pull --rebase'
+alias gplo='gpl origin '
 alias gpsom='gpso master'
 alias gplom='gplo master'
 alias gplos='gplo staging'
