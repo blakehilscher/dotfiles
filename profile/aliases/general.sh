@@ -15,7 +15,7 @@ alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
 alias du='du -kh'       # Makes a more readable output.
 alias df='df -kTh'
 
-alias m='mate .'
+alias m='sublime .'
 alias o='open .'
 
 alias psg='ps aux | grep '
