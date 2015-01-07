@@ -18,9 +18,10 @@ else
   configs.each do |name, config|
     local_path = config['local']
     remote_path = config['remote']
+    exclude = config['exclude'].is_a?(Array) ? config['exclude'].collect{|i| "--exclude '#{i}'"}.join(' ') : ''
     chdir(local_path) do |f|
       puts "qsyncing #{name} #{local_path} to #{remote_path}"
-      bash "rsync -avz . #{remote_path}"
+      bash "rsync -avz #{exclude} . #{remote_path}"
     end
   end
 end

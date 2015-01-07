@@ -7,3 +7,5 @@ alias ki='knife into '
 alias g='goto'
 
 alias flushhosts='dscacheutil -flushcache;sudo killall -HUP mDNSResponder'
+
+alias mate='sublime'
