@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
-branch = `git branch`.strip.rstrip
-`git push origin #{branch}`
+def bash(command)
+	puts(command)
+	system(command)
+end
+branch = `git branch | grep '*'`.strip.rstrip.gsub('* ', '')
+
+bash "git push origin #{branch}"

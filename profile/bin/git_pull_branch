@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+def bash(command)
+  puts(command)
+  system(command)
+end
+branch = `git branch | grep '*'`.strip.rstrip.gsub('* ', '')
+
+bash "git pull origin #{branch}"

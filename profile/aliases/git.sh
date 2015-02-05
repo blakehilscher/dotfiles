@@ -28,7 +28,10 @@ alias gplod='gplo develop'
 alias gpsor='gpso release'
 alias gplor='gplo release'
 alias gpshm='git push heroku master'
-alias gpb='git_push_branch'
+
+alias gpsb='git_push_branch'
+alias gplb='git_pull_branch'
+
 
 # Merge
 alias gcp='git cherry-pick'

@@ -9,3 +9,5 @@ alias g='goto'
 alias flushhosts='dscacheutil -flushcache;sudo killall -HUP mDNSResponder'
 
 alias mate='sublime'
+
+alias reload='source ~/.bash_profile'
