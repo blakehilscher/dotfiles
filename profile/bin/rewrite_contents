@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+require 'fileutils'
+
+if ARGV.length <= 2
+  puts "USAGE: rewrite_contents files*.sql original_pattern new_pattern"
+else
+  new_pattern = ARGV.pop
+  old_pattern = ARGV.pop
+
+  ARGV.each do |filename|
+    index = 0
+    count = %x{wc -l #{filename}}.split.first.to_i.to_f
+    tmp_file = File.new("#{filename}.tmp", "w")
+    file = File.open(filename)
+    file.each_line do |line|
+      tmp_file.write(line.gsub(old_pattern, new_pattern))
+      index = index + 1
+      puts(((index / count) * 100).to_i.to_s + '% complete') if index % 100 == 0
+    end
+    backup = "#{filename}.#{Time.now.to_f.to_i}.backup"
+    FileUtils.mv(filename, backup)
+    FileUtils.mv(tmp_file, filename)
+    puts "100% complete. Previous file backup is created at: #{backup}"
+  end
+end
