@@ -36,7 +36,8 @@ def fetch_servers
     reservation['Instances'].each do |instance|
       server = {}
       server['ip'] = instance['PublicIpAddress']
-      server['name'] = instance['Tags'].find { |t| t['Key'] == 'Name' }['Value'].downcase.gsub(/\s+/, '-') rescue ''
+      server['name'] = instance['Tags'].find { |t| t['Key'] == 'Name' }['Value'] rescue ''
+      server['match_name'] = server['name'].downcase.gsub(/\s+/, '-')
       server['title'] = server['ip'].to_s + ' - ' + server['name'].to_s
       servers << OpenStruct.new(server)
     end
@@ -54,14 +55,15 @@ elsif ['--list', '-l'].include?(arg1)
 else
   servers = fetch_servers
   ARGV.each do |arg|
-    servers = servers.select { |s| s.name.match(arg) }
+    servers = servers.select { |s| s.match_name.match(arg) || s.ip.match(arg) }
   end
-  if servers.length > 1
+  if servers.length == 1
+    server = servers[0]
+    puts "# connecting to #{server.name}"
+    bash("ssh ubuntu@#{server.ip} -i #{ENV['HOME']}/.ssh/callpixels_deploy.pem")
+  else
     puts "Multiple servers matched: #{ARGV.join(' ')}"
     puts servers.collect(&:title).join("\n")
-  else
-    server = servers[0]
-    bash("ssh ubuntu@#{server.ip} -i #{ENV['HOME']}/.ssh/callpixels_deploy.pem")
   end
 end
 
