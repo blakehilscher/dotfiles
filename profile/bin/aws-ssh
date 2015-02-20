@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+require 'active_support/core_ext/hash'
+require 'active_support/core_ext/integer/time'
+require 'json'
+require 'fileutils'
+require 'ostruct'
+
+def bash(c)
+  puts c
+  system(c)
+end
+
+def describe_instances
+  cache_path = File.join(ENV['HOME'], '.aws/')
+  cache_file = File.join(cache_path, '.describe-instances-cache')
+  # ensure dir exists
+  FileUtils.mkdir_p(cache_path) unless Dir.exists?(cache_path)
+  # ensure cache is recent
+  if File.exists?(cache_file) && File.ctime(cache_file) > 1.hour.ago
+    payload = File.read(cache_file)
+  else
+    puts 'cache missed, hitting api'
+    payload = %x(aws ec2 describe-instances)
+    File.write(cache_file, payload)
+  end
+  # onwards
+  JSON.parse(payload)
+end
+
+def fetch_servers
+  instances = describe_instances
+  servers = []
+  instances['Reservations'].each do |reservation|
+    reservation['Instances'].each do |instance|
+      server = {}
+      server['ip'] = instance['PublicIpAddress']
+      server['name'] = instance['Tags'].find { |t| t['Key'] == 'Name' }['Value'].downcase.gsub(/\s+/, '-') rescue ''
+      server['title'] = server['ip'].to_s + ' - ' + server['name'].to_s
+      servers << OpenStruct.new(server)
+    end
+  end
+  servers.reject { |s| s.name.blank? || s.ip.blank? }.sort_by { |s| s.name }
+end
+
+arg1 = ARGV[0]
+
+if arg1.blank?
+  puts 'Please provide the name of the server, or --list'
+elsif ['--list', '-l'].include?(arg1)
+
+  puts fetch_servers.collect(&:title)
+else
+  servers = fetch_servers
+  ARGV.each do |arg|
+    servers = servers.select { |s| s.name.match(arg) }
+  end
+  if servers.length > 1
+    puts "Multiple servers matched: #{ARGV.join(' ')}"
+    puts servers.collect(&:title).join("\n")
+  else
+    server = servers[0]
+    bash("ssh ubuntu@#{server.ip} -i #{ENV['HOME']}/.ssh/callpixels_deploy.pem")
+  end
+end
+
