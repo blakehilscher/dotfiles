@@ -36,9 +36,10 @@ def fetch_servers
     reservation['Instances'].each do |instance|
       server = {}
       server['ip'] = instance['PublicIpAddress']
+      server['private_ip'] = instance['PrivateIpAddress']
       server['name'] = instance['Tags'].find { |t| t['Key'] == 'Name' }['Value'] rescue ''
       server['match_name'] = server['name'].downcase.gsub(/\s+/, '-')
-      server['title'] = server['ip'].to_s + ' - ' + server['name'].to_s
+      server['title'] = server['ip'].to_s + ' - ' + server['name'].to_s + ' - ' + server['private_ip'].to_s
       servers << OpenStruct.new(server)
     end
   end
@@ -60,7 +61,7 @@ else
   if servers.length == 1
     server = servers[0]
     puts "# connecting to #{server.name}"
-    bash("ssh ubuntu@#{server.ip} -i #{ENV['HOME']}/.ssh/callpixels_deploy.pem")
+    bash(%Q{ssh ubuntu@#{server.ip} -i #{ENV['HOME']}/.ssh/callpixels_deploy.pem})
   else
     puts "Multiple servers matched: #{ARGV.join(' ')}"
     puts servers.collect(&:title).join("\n")
