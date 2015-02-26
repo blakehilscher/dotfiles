@@ -1,5 +1,5 @@
 function goto () {
-  cd "$(ruby ~/bin/goto.rb $@)"
+  cd "$(ruby $DOTFILES_DIR/profile/bin/goto.rb $@)"
 }
 
 function current_ip {

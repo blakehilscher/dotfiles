@@ -15,7 +15,6 @@ export EC2_HOME=~/.ec2
 export PATH=$PATH:$EC2_HOME/bin
 export EC2_PRIVATE_KEY=$EC2_HOME/pk-blake.pem
 export EC2_CERT=$EC2_HOME/cert-blake.pem
-export EC2_SSH_PRIVATE_KEY=~/.ssh/quandl_3.pem
 
 [[ -s "/usr/libexec/java_home" ]] && export JAVA_HOME="`/usr/libexec/java_home`"
 
@@ -26,8 +25,9 @@ export EC2_SSH_PRIVATE_KEY=~/.ssh/quandl_3.pem
 rvm_project_rvmrc=1
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
+export PATH=$DOTFILES_DIR/profile/bin:$PATH
+
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-### Added by the Quandl Toolbelt
-export PATH="/usr/local/quandl/bin:$PATH"
+

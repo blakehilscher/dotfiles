@@ -15,7 +15,6 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 ln -sf $DIR/bash_profile $TARGET/.bash_profile
-ln -sf $DIR/profile/bin/ $TARGET/bin
 ln -sf $DIR/bashrc $TARGET/.bashrc
 ln -sf $DIR/gemrc $TARGET/.gemrc
 ln -sf $DIR/vimrc $TARGET/.vimrc
