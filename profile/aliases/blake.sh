@@ -15,4 +15,7 @@ alias reload='source ~/.bash_profile'
 alias ssh-cp-api='nw "aws-ssh api 1a"; nt "aws-ssh api 1e";'
 alias ssh-cp-apps='nw "aws-ssh app 1a"; nt "aws-ssh app 1e";'
 alias ssh-cp-jobs='nw "aws-ssh jobs exp 1a"; nt "aws-ssh jobs exp 1e"; nt "aws-ssh jobs rec 1a"; nt "aws-ssh jobs rec 1e";'
-alias ssh-cp-rails='nw "aws-ssh jobs exp 1a"; nt "aws-ssh jobs exp 1e"; nt "aws-ssh jobs rec 1a"; nt "aws-ssh jobs rec 1e"; nt "aws-ssh api 1a"; nt "aws-ssh api 1e"; nt "aws-ssh app 1a"; nt "aws-ssh app 1e";'
+alias ssh-cp-all='nw "aws-ssh jobs exp 1a"; nt "aws-ssh jobs exp 1e"; nt "aws-ssh jobs rec 1a"; nt "aws-ssh jobs rec 1e"; nt "aws-ssh api 1a"; nt "aws-ssh api 1e"; nt "aws-ssh app 1a"; nt "aws-ssh app 1e"; nt "aws-ssh twilio 1a"; nt "aws-ssh twilio 1e";'
+
+
+alias z='zeus'
