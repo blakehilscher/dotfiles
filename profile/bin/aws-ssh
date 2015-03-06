@@ -38,7 +38,7 @@ def fetch_servers
       server['ip'] = instance['PublicIpAddress']
       server['private_ip'] = instance['PrivateIpAddress']
       server['name'] = instance['Tags'].find { |t| t['Key'] == 'Name' }['Value'] rescue ''
-      server['match_name'] = server['name'].downcase.gsub(/\s+/, '-')
+      server['match_name'] = server['name'].to_s.downcase.gsub(/\s+/, '-')
       server['title'] = server['ip'].to_s + ' - ' + server['name'].to_s + ' - ' + server['private_ip'].to_s
       servers << OpenStruct.new(server)
     end
