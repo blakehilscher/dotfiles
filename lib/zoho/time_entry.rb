@@ -12,8 +12,10 @@ class Zoho
       Creating:
         project: #{project.project_name}
         task: #{task.task_name}
+        begin_time: #{begin_time.strftime("%I:%M %p")}
         notes:
           #{notes}\n\n}
+
       puts Zoho::Request.new(endpoint: '/projects/timeentries').post(payload)['message'] unless saved?
     end
 
