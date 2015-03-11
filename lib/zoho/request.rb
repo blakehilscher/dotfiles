@@ -39,15 +39,11 @@ class Zoho
     end
 
     def auth_params
-      {authtoken: authtoken, organization_id: organization_id}
-    end
-
-    def authtoken
-      config[:authtoken]
-    end
-
-    def organization_id
-      config[:organization_id]
+      {
+          authtoken: config[:authtoken],
+          organization_id: config[:organization_id],
+          user_id: config[:user_id]
+      }
     end
 
     private

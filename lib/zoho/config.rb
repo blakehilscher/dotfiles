@@ -18,8 +18,8 @@ class Zoho
     end
 
     def assert_valid!(config)
-      if config[:authtoken].blank? || config[:organization_id].blank?
-        raise ArgumentError.new("\n\nYou must create a zoho auth file:\n#{config_path}\n\nIt must contain:\nauthtoken: xyz\norganization_id: 123\n\n")
+      if config[:authtoken].blank? || config[:organization_id].blank? || config[:user_id].blank?
+        raise ArgumentError.new("\n\nYou must create a zoho auth file:\n#{config_path}\n\nIt must contain:\nauthtoken: xyz\norganization_id: 123\nuser_id: 123\n\n")
       end
       config
     end

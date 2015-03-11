@@ -2,6 +2,7 @@ require 'net/http'
 require 'json'
 require_relative './config.rb'
 require_relative './request.rb'
+require_relative './time_entry.rb'
 
 class Zoho
 
@@ -12,12 +13,8 @@ class Zoho
     Zoho::Request.default_config = config
   end
 
-  def time_entry(payload)
-    Zoho::Request.new(endpoint: '/projects/timeentries').post(payload)
-  end
-
-  def projects
-    Zoho::Request.new(endpoint: 'projects').get
+  def log(project, task, *times)
+    Zoho::TimeEntry.new(project: project, task: task, time: times)
   end
 
   def config
@@ -29,4 +26,15 @@ class Zoho
   end
 end
 
-puts Zoho.new.projects
+z = Zoho.new
+
+command = ARGV.shift
+
+if command == 'log'
+  z.log(*ARGV)
+else
+  puts %Q{
+  Available commands:
+    log
+  }
+end
