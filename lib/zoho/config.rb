@@ -1,5 +1,4 @@
 require 'active_support/all'
-require 'yaml'
 
 class Zoho
   class Config

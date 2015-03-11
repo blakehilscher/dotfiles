@@ -17,6 +17,7 @@ class Zoho
           #{notes}\n\n}
 
       puts Zoho::Request.new(endpoint: '/projects/timeentries').post(payload)['message'] unless saved?
+      `open "https://invoice.zoho.com/app#/timesheet/projects/#{project.project_id}"`
     end
 
     def payload

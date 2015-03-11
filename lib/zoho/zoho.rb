@@ -1,3 +1,4 @@
+require 'yaml'
 require 'net/http'
 require 'json'
 require_relative './config.rb'
