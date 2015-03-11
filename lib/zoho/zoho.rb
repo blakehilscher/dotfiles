@@ -4,6 +4,8 @@ require 'json'
 require_relative './config.rb'
 require_relative './request.rb'
 require_relative './time_entry.rb'
+require_relative './project.rb'
+require_relative './task.rb'
 
 class Zoho
 
@@ -27,11 +29,13 @@ class Zoho
     Zoho::TimeEntry.new(project: project, task: task, time: times).save
   end
 
-
   def describe
     puts %Q{
     Available commands:
-      log project_name task_name 2 hours
+      zoho log project_name task_name 2 hours         # Create a timesheet entry
+      zoho open project_name                          # Open a project in your browser
+      zoho projects                                   # List projects
+      zoho tasks project_name                         # List tasks for a project
     }
   end
 
@@ -43,6 +47,16 @@ command = ARGV.shift
 begin
   if command == 'log'
     z.log(*ARGV)
+  elsif command == 'open'
+    project = Zoho::Project.find(ARGV[0])
+    `open "https://invoice.zoho.com/app#/timesheet/projects/#{project.project_id}"`
+  elsif command == 'projects'
+    puts "Projects: "
+    puts Zoho::Project.all.collect { |p| "  #{p.project_name}\n" }.join
+  elsif command == 'tasks'
+    project = Zoho::Project.find(ARGV[0])
+    puts "Tasks for project: #{project.project_name}"
+    puts Zoho::Task.all(project.project_id).collect { |p| "  #{p.task_name}\n" }.join
   else
     z.describe
   end

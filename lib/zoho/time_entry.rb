@@ -14,10 +14,9 @@ class Zoho
         task: #{task.task_name}
         begin_time: #{begin_time.strftime("%I:%M %p")}
         notes:
-          #{notes}\n\n}
+          #{notes}\n}
 
       puts Zoho::Request.new(endpoint: '/projects/timeentries').post(payload)['message'] unless saved?
-      `open "https://invoice.zoho.com/app#/timesheet/projects/#{project.project_id}"`
     end
 
     def payload
@@ -38,11 +37,11 @@ class Zoho
     end
 
     def task
-      @task ||= resolve_task
+      @task ||= Zoho::Task.find(project.project_id, attributes[:task])
     end
 
     def project
-      @project ||= resolve_project
+      @project ||= Zoho::Project.find(attributes[:project])
     end
 
     def notes
@@ -55,14 +54,6 @@ class Zoho
 
     def users
       @users ||= Zoho::Request.new(endpoint: 'users').get_ostruct(:users)
-    end
-
-    def projects
-      @projects ||= Zoho::Request.new(endpoint: 'projects').get_ostruct(:projects)
-    end
-
-    def tasks
-      @tasks ||= Zoho::Request.new(endpoint: "/projects/#{project.project_id}/tasks").get_ostruct(:task)
     end
 
     def saved?
@@ -80,29 +71,9 @@ class Zoho
     def resolve_user
       items = users.select { |p| p.name =~ /#{Zoho.config[:user]}/i }
       if items.blank?
-        raise ArgumentError.new("No task matched: #{attributes[:task]}\nFound:\n#{users.collect(&:task_name).join("\n")}")
+        raise ArgumentError.new("No user matched: #{attributes[:user]}\nFound:\n#{users.collect(&:name).join("\n")}")
       elsif items.count > 1
-        raise ArgumentError.new("Multiple users matched: #{attributes[:task]}\nFound:\n#{items.collect(&:task_name).join("\n")}")
-      end
-      items[0]
-    end
-
-    def resolve_task
-      items = tasks.select { |p| p.task_name =~ /#{attributes[:task]}/i }
-      if items.blank?
-        raise ArgumentError.new("No task matched: #{attributes[:task]}\nFound:\n#{tasks.collect(&:task_name).join("\n")}")
-      elsif items.count > 1
-        raise ArgumentError.new("Multiple tasks matched: #{attributes[:task]}\nFound:\n#{items.collect(&:task_name).join("\n")}")
-      end
-      items[0]
-    end
-
-    def resolve_project
-      items = projects.select { |p| p.project_name =~ /#{attributes[:project]}/i }
-      if items.blank?
-        raise ArgumentError.new("No projects matched: #{attributes[:project]}\nFound:\n#{projects.collect(&:project_name).join("\n")}")
-      elsif items.count > 1
-        raise ArgumentError.new("Multiple projects matched: #{attributes[:project]}\nFound:\n#{items.collect(&:project_name).join("\n")}")
+        raise ArgumentError.new("Multiple users matched: #{attributes[:user]}\nFound:\n#{items.collect(&:name).join("\n")}")
       end
       items[0]
     end
