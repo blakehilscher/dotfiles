@@ -6,35 +6,49 @@ require_relative './time_entry.rb'
 
 class Zoho
 
+  class << self
+
+    attr_accessor :config
+
+    def config
+      @config ||= Zoho::Config.new("#{ENV['HOME']}/.zoho").load
+    end
+
+  end
+
   attr_reader :options
 
   def initialize(options={})
     @options = options.with_indifferent_access
-    Zoho::Request.default_config = config
   end
 
   def log(project, task, *times)
-    Zoho::TimeEntry.new(project: project, task: task, time: times)
+    Zoho::TimeEntry.new(project: project, task: task, time: times).save
   end
 
-  def config
-    @config ||= Zoho::Config.new(config_path).load
+
+  def describe
+    puts %Q{
+    Available commands:
+      log project_name task_name 2 hours
+    }
   end
 
-  def config_path
-    @config_path ||= options[:config_path] || "#{ENV['HOME']}/.zoho"
-  end
 end
 
 z = Zoho.new
-
 command = ARGV.shift
 
-if command == 'log'
-  z.log(*ARGV)
-else
-  puts %Q{
-  Available commands:
-    log
-  }
+begin
+  if command == 'log'
+    z.log(*ARGV)
+  else
+    z.describe
+  end
+
+rescue => err
+  puts "\nAn error occurred:\n\n"
+  puts err
+  puts err.backtrace[0..1].join("\n")
+  z.describe
 end

@@ -1,16 +1,14 @@
+require 'ostruct'
+require 'httparty'
+
 class Zoho
   class Request
 
-    class << self
-      attr_accessor :default_config
-    end
-
     API_HOST = 'https://invoice.zoho.com/api/v3/'
 
-    attr_reader :config, :endpoint, :response_text, :data
+    attr_reader :endpoint, :response_text, :data
 
     def initialize(options={})
-      @config = options[:config] || self.class.default_config
       @endpoint = options[:endpoint]
     end
 
@@ -18,12 +16,17 @@ class Zoho
       parse_response http_post_uri(payload)
     end
 
+    def get_ostruct(hash_key)
+      get[hash_key.to_s].collect { |r| OpenStruct.new(r) }
+    end
+
     def get
       parse_response http_get_uri
     end
 
     def http_post_uri(payload)
-      Net::HTTP.post_form(uri, payload)
+      url = uri.to_s + '&' + URI.encode_www_form({JSONString: payload.to_json})
+      HTTParty.post(url).body
     end
 
     def http_get_uri
@@ -36,13 +39,15 @@ class Zoho
 
     def parse_response(response)
       JSON.parse(response)
+    rescue => err
+      require 'pry'
+      binding.pry
     end
 
     def auth_params
       {
-          authtoken: config[:authtoken],
-          organization_id: config[:organization_id],
-          user_id: config[:user_id]
+          authtoken: Zoho.config[:authtoken],
+          organization_id: Zoho.config[:organization_id]
       }
     end
 
