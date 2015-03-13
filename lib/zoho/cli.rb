@@ -42,4 +42,26 @@ class CLI < Thor
     open(project) if options[:open]
   end
 
+  desc 'time PROJECT TASK', 'zoho time DesignProject wireframes'
+
+  option :notes, aliases: '-n'
+  option :open, type: :boolean, aliases: '-o'
+
+  def time(project, task)
+    args = {
+        project: project,
+        task: task,
+        notes: options[:notes],
+        start_timer: true
+    }
+    Zoho::TimeEntry.new(args).save
+    open(project) if options[:open]
+  end
+
+  desc 'time_stop', 'Stop the current timer'
+
+  def time_stop
+    Zoho::TimeEntry.stop_timer
+  end
+
 end

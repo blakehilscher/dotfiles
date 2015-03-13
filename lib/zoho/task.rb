@@ -6,8 +6,9 @@ class Zoho
         task = find(project_id, name)
         if task.blank?
           puts "Task '#{name}' not found, creating ..."
-          create(project_id, {task_name: name})
+          task = create(project_id, {task_name: name})
         end
+        task
       end
 
       def find(project_id, name)

@@ -1,6 +1,13 @@
 class Zoho
   class TimeEntry
 
+    class << self
+      # POST  /projects/timeentries/timer/stop
+      def stop_timer
+        puts Zoho::Request.new(endpoint: '/projects/timeentries/timer/stop').post({})['message']
+      end
+    end
+
     attr_reader :attributes
 
     def initialize(attrs={})
@@ -19,16 +26,21 @@ class Zoho
     end
 
     def payload
-      {
+      data = {
           project_id: project.project_id,
           task_id: task.task_id,
           log_date: begin_time.strftime('%Y-%m-%d'),
-          begin_time: begin_time.strftime('%H:%M'),
-          end_time: Time.now.strftime('%H:%M'),
           is_billable: true,
           notes: notes,
           user_id: user.user_id
       }
+      if attributes[:start_timer].present?
+        data[:start_timer] = true
+      else
+        data[:begin_time] = begin_time.strftime('%H:%M')
+        data[:end_time] = Time.now.strftime('%H:%M')
+      end
+      data
     end
 
     def begin_time
@@ -68,7 +80,11 @@ class Zoho
     def resolve_begin_time
       amount = attributes[:time]
       frequency = attributes[:frequency]
-      amount.to_i.send(frequency).ago
+      if amount.blank? || frequency.blank?
+        Time.now
+      else
+        amount.to_i.send(frequency).ago
+      end
     end
 
     def resolve_user
