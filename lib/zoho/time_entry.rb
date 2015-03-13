@@ -15,7 +15,6 @@ class Zoho
         begin_time: #{begin_time.strftime("%I:%M %p")}
         notes:
           #{notes}\n}
-
       puts Zoho::Request.new(endpoint: '/projects/timeentries').post(payload)['message'] unless saved?
     end
 
@@ -45,7 +44,11 @@ class Zoho
     end
 
     def notes
-      `git log --pretty=oneline --abbrev-commit --since="#{attributes[:time][0]} #{attributes[:time][1]} ago"`
+      if attributes[:notes].present?
+        attributes[:notes]
+      else
+        `git log --pretty=oneline --abbrev-commit --since="#{attributes[:time]} #{attributes[:frequency]} ago"`
+      end
     end
 
     def user
@@ -63,8 +66,8 @@ class Zoho
     private
 
     def resolve_begin_time
-      amount = attributes[:time][0]
-      frequency = attributes[:time][1]
+      amount = attributes[:time]
+      frequency = attributes[:frequency]
       amount.to_i.send(frequency).ago
     end
 
