@@ -9,7 +9,7 @@ class Zoho
 
     def save
       puts %Q{
-      Creating:
+      Creating Timesheet Entry:
         project: #{project.project_name}
         task: #{task.task_name}
         begin_time: #{begin_time.strftime("%I:%M %p")}
@@ -36,7 +36,7 @@ class Zoho
     end
 
     def task
-      @task ||= Zoho::Task.find(project.project_id, attributes[:task])
+      @task ||= Zoho::Task.find_or_create(project.project_id, attributes[:task])
     end
 
     def project
