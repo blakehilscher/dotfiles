@@ -11,7 +11,8 @@ class Zoho
       end
 
       def where(project_id, name)
-        items = all(project_id).select { |p| p.task_name =~ /#{name}/i }
+        items = [all(project_id).find { |i| i.task_name == name }].compact
+        items = all(project_id).select { |p| p.task_name =~ /#{name}/i } if items.blank?
         if items.blank?
           raise ArgumentError.new("No tasks matched: #{name}\nFound:\n#{all(project_id).collect(&:task_name).join("\n")}")
         end

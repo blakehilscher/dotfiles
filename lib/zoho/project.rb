@@ -11,7 +11,8 @@ class Zoho
       end
 
       def where(name)
-        items = all.select { |p| p.project_name =~ /#{name}/i }
+        items = [all.find { |p| p.project_name == name }].compact
+        items = all.select { |p| p.project_name =~ /#{name}/i } if items.blank?
         if items.blank?
           raise ArgumentError.new("No projects matched: #{name}\nFound:\n#{all.collect(&:project_name).join("\n")}")
         end

@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
-require_relative '../zoho.rb'
+require_relative '../cli.rb'
+
+CLI.start(ARGV)
