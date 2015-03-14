@@ -12,6 +12,10 @@ class Zoho
       @endpoint = options[:endpoint]
     end
 
+    def put(payload)
+      parse_response http_put_uri(payload)
+    end
+
     def post(payload)
       parse_response http_post_uri(payload)
     end
@@ -22,6 +26,11 @@ class Zoho
 
     def get
       parse_response http_get_uri
+    end
+
+    def http_put_uri(payload)
+      url = uri.to_s + '&' + URI.encode_www_form({JSONString: payload.to_json})
+      HTTParty.put(url).body
     end
 
     def http_post_uri(payload)

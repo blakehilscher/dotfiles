@@ -4,7 +4,21 @@ class Zoho
     class << self
       # POST  /projects/timeentries/timer/stop
       def stop_timer
-        puts Zoho::Request.new(endpoint: '/projects/timeentries/timer/stop').post({})['message']
+        # stop the timer
+        response = Zoho::Request.new(endpoint: '/projects/timeentries/timer/stop').post({})
+        puts response['message']
+        if response['code'] == 0
+          # update it with the commits that occurred since the timer started
+          entry = OpenStruct.new(response['time_entry'])
+          hour, minute = entry.log_time.split(':').collect(&:to_i)
+          id = entry.time_entry_id
+          notes = `git log --pretty=oneline --abbrev-commit --since="#{hour}:#{minute} hours ago"`
+          if notes.present?
+            update = Zoho::Request.new(endpoint: "/projects/timeentries/#{id}").put({notes: notes})
+            puts update['message']
+            puts notes
+          end
+        end
       end
     end
 
