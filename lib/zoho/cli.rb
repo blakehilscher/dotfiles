@@ -22,7 +22,7 @@ class CLI < Thor
 
   def open(project_name)
     project = Zoho::Project.find(project_name)
-    `open "https://invoice.zoho.com/app#/timesheet/projects/#{project.project_id}"`
+    Zoho.bash(%Q{open "https://invoice.zoho.com/app#/timesheet/projects/#{project.project_id}"})
   end
 
   desc 'log PROJECT TASK DURATION FREQUENCY', 'zoho log DesignProject wireframes 2 hours'
@@ -59,9 +59,10 @@ class CLI < Thor
   end
 
   desc 'time_stop', 'Stop the current timer'
+  option :notes, aliases: '-n'
 
   def time_stop
-    Zoho::TimeEntry.stop_timer
+    Zoho::TimeEntry.stop_timer(options)
   end
 
 end

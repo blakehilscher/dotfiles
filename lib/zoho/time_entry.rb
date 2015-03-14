@@ -3,7 +3,7 @@ class Zoho
 
     class << self
       # POST  /projects/timeentries/timer/stop
-      def stop_timer
+      def stop_timer(options={})
         # stop the timer
         response = Zoho::Request.new(endpoint: '/projects/timeentries/timer/stop').post({})
         puts response['message']
@@ -12,7 +12,7 @@ class Zoho
           entry = OpenStruct.new(response['time_entry'])
           hour, minute = entry.log_time.split(':').collect(&:to_i)
           id = entry.time_entry_id
-          notes = `git log --pretty=oneline --abbrev-commit --since="#{hour}:#{minute} hours ago"`
+          notes = options[:notes] || Zoho.bash(%Q{git log --pretty=oneline --abbrev-commit --since="#{hour} hours #{minute} minutes ago"})
           if notes.present?
             update = Zoho::Request.new(endpoint: "/projects/timeentries/#{id}").put({notes: notes})
             puts update['message']
@@ -33,9 +33,9 @@ class Zoho
       Creating Timesheet Entry:
         project: #{project.project_name}
         task: #{task.task_name}
-        begin_time: #{begin_time.strftime("%I:%M %p")}
-        notes:
-          #{notes}\n}
+        begin_time: #{begin_time.strftime("%I:%M %p")}}
+      puts %Q{notes:
+          #{notes}\n} if notes.present?
       puts Zoho::Request.new(endpoint: '/projects/timeentries').post(payload)['message'] unless saved?
     end
 
@@ -72,8 +72,8 @@ class Zoho
     def notes
       if attributes[:notes].present?
         attributes[:notes]
-      else
-        `git log --pretty=oneline --abbrev-commit --since="#{attributes[:time]} #{attributes[:frequency]} ago"`
+      elsif attributes[:time].present? && attributes[:frequency].present?
+        Zoho.bash(%Q{git log --pretty=oneline --abbrev-commit --since="#{attributes[:time]} #{attributes[:frequency]} ago"})
       end
     end
 

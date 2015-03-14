@@ -16,5 +16,10 @@ class Zoho
       @config ||= Zoho::Config.new("#{ENV['HOME']}/.zoho").load
     end
 
+    def bash(c)
+      puts c
+      %x{#{c}}.strip
+    end
+
   end
 end
