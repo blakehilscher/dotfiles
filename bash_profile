@@ -26,4 +26,4 @@ source "$DOTFILES_DIR/profile/completion.sh"
 PATH="/usr/local/quandl/bin:$PATH"
 
 export EDITOR=vimexport PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+#eval "$(rbenv init -)"

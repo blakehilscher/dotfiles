@@ -29,14 +29,14 @@ class Zoho
     end
 
     def save
+      data = payload
       puts %Q{
       Creating Timesheet Entry:
         project: #{project.project_name}
         task: #{task.task_name}
-        begin_time: #{begin_time.strftime("%I:%M %p")}}
-      puts %Q{notes:
-          #{notes}\n} if notes.present?
-      puts Zoho::Request.new(endpoint: '/projects/timeentries').post(payload)['message'] unless saved?
+        begin_time: #{begin_time.strftime("%I:%M %p")}\n\n}
+      puts data[:notes] + "\n\n" if data[:notes].present?
+      puts Zoho::Request.new(endpoint: '/projects/timeentries').post(data)['message'] unless saved?
     end
 
     def payload

@@ -1,9 +1,3 @@
-alias quandl_forward_staging_pg='ssh -i "/Users/blake/.ssh/quandl_3.pem" -L 5558:localhost:5432 ubuntu@54.234.46.46'
-alias quandl_reinstall_gems='for i in [command format client data babelfish operation logger]; do gem uninstall -aIx "quandl_$i"; done; gem install quandl_command'
-alias q='quandl'
-
-alias ki='knife into '
-
 alias g='goto'
 
 alias flushhosts='dscacheutil -flushcache;sudo killall -HUP mDNSResponder'
@@ -19,3 +13,17 @@ alias ssh-cp-all='nw "aws-ssh jobs exp 1a"; nt "aws-ssh jobs exp 1e"; nt "aws-ss
 
 
 alias z='zeus'
+
+alias zt='zoho time'
+
+function boot_cp (){
+  goto -cc
+  bundle
+  migrate
+  sleep 0.5
+  new_window "bundle exec rails server"
+  newtab "bundle exec rails console"
+  newtab "bundle exec zeus start"
+  newtab "bundle exec sidekiq -C config/sidekiq.yml"
+  newtab "bundle exec rake sunspot:solr:start; git status"
+}
