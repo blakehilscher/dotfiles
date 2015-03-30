@@ -25,5 +25,6 @@ source "$DOTFILES_DIR/profile/completion.sh"
 # Added by Quandl Toolbelt
 PATH="/usr/local/quandl/bin:$PATH"
 
-export EDITOR=vimexport PATH="$HOME/.rbenv/bin:$PATH"
+export EDITOR=vim
+export PATH="$HOME/.rbenv/bin:$PATH"
 #eval "$(rbenv init -)"
