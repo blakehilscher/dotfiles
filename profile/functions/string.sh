@@ -1,6 +1,10 @@
 # Find a file with a pattern in name:
 function ff() { find . -type f -iname '*'$*'*' -ls ; }
 
+function fif() {
+    grep -r $1 .
+}
+
 function lowercase()  # move filenames to lowercase
 {
     for file ; do
