@@ -61,18 +61,20 @@ class CLI < Thor
   end
 
   def extract_title(string)
-    string.split("\n").reject(&:blank?).first.parameterize
+    string = reject_patterns(string, [/evform/i, /^\/$/, /e-form/i])
+    string.split("\n").first.to_s.parameterize
   end
 
   def extract_date(filename, string)
+    string = reject_patterns(string, [/evform/i, /e-form/i])
     full_months = 'january|february|march|april|may|june|july|august|september|october|november|december'
     short_months = 'jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec'
     sep = '[-\/]'
     long_year = '[12][09][0-9][0-9]'
     months = "(#{full_months}|#{short_months})"
     formats = {
-        /[01][0-9]#{sep}[0-3][0-9]#{sep}\d{2}/ => '%m/%d/%y',
         /[01][0-9]#{sep}[0-3][0-9]#{sep}#{long_year}/ => '%m/%d/%Y',
+        /[01][0-9]#{sep}[0-3][0-9]#{sep}\d{2}/ => '%m/%d/%y',
         /#{months} \d{1,2}, #{long_year}/i => '%b %d, %Y',
         /#{months} \d{1,2} \d{2}/i => '%b %d %y',
         /\d{1,2}#{sep}#{long_year}/i => '%m/%Y',
@@ -92,6 +94,12 @@ class CLI < Thor
       end
     end
     false
+  end
+
+  def reject_patterns(string, patterns)
+    string.split("\n").reject(&:blank?).reject do |l|
+      patterns.collect { |p| l.match(p) }.join.present?
+    end.join("\n")
   end
 
   def tesseract(file)
