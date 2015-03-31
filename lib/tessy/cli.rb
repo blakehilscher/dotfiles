@@ -24,7 +24,6 @@ class CLI < Thor
   option :valid, type: :boolean
 
   def check(*files)
-
     files.each do |file_path|
       file = Tessy::TessyFile.new(file_path)
       message = file.check.collect { |key, value| "#{key} => #{value}\n" }.join + "\n----\n"
