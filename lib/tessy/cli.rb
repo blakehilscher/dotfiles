@@ -14,100 +14,28 @@ class CLI < Thor
 
   def process(*files)
     Parallel.map(files, in_processes: 6) do |file|
-      if File.exists?(file)
-        puts "read #{File.basename(file)}"
-        ext = File.basename(file).split('.').last
-        words = tesseract(file)
-        date = extract_date(file, words)
-        if date.present?
-          title = extract_title(words)
-          filename = "#{date},#{title}.#{ext}"
-          if file =~ /^Scan/i
-            puts "rename #{filename}"
-            rename_file(file, filename)
-            write_txt(filename, words)
-          else
-            puts "update #{file}.txt"
-            write_txt(file, words)
-          end
-        else
-          puts "invalid #{file}"
-          write_txt(file, words)
-        end
+      Tessy::TessyFile.new(file).process
+    end
+  end
+
+  desc 'check', 'tessy check file1 file2 ...'
+
+  option :invalid, type: :boolean
+  option :valid, type: :boolean
+
+  def check(*files)
+
+    files.each do |file_path|
+      file = Tessy::TessyFile.new(file_path)
+      message = file.check.collect { |key, value| "#{key} => #{value}\n" }.join + "\n----\n"
+      if options[:invalid]
+        puts message if file.date.blank?
+      elsif options[:valid]
+        puts message if file.date.present?
+      else
+        puts message
       end
     end
-  end
-
-  desc 'test_date', 'tessy test_date file1 file2 ...'
-
-  def test_date(*files)
-    files.each do |file|
-      date = extract_date(file, File.read(file))
-      puts "#{file} - #{date}"
-    end
-  end
-
-  private
-
-  def rename_file(original, filename)
-    unless original == filename
-      FileUtils.mv(original, filename)
-    end
-  end
-
-  def write_txt(filename, string)
-    name = "#{filename}.txt"
-    File.write(name, string)
-  end
-
-  def extract_title(string)
-    string = reject_patterns(string, [/evform/i, /^\/$/, /e-form/i])
-    string.split("\n").first.to_s.parameterize
-  end
-
-  def extract_date(filename, string)
-    string = reject_patterns(string, [/evform/i, /e-form/i])
-    full_months = 'january|february|march|april|may|june|july|august|september|october|november|december'
-    short_months = 'jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec'
-    sep = '[-\/]'
-    long_year = '[12][09][0-9][0-9]'
-    months = "(#{full_months}|#{short_months})"
-    formats = {
-        /[01][0-9]#{sep}[0-3][0-9]#{sep}#{long_year}/ => '%m/%d/%Y',
-        /[01][0-9]#{sep}[0-3][0-9]#{sep}\d{2}/ => '%m/%d/%y',
-        /#{months} \d{1,2}, #{long_year}/i => '%b %d, %Y',
-        /#{months} \d{1,2} \d{2}/i => '%b %d %y',
-        /\d{1,2}#{sep}#{long_year}/i => '%m/%Y',
-        /#{months} \d{1,2}#{sep}\d{2}/i => '%b %d/%y',
-        /\d{1,2} #{months} \d{2}/i => '%d %b %y',
-        /\d{1,2} #{months} #{sep} \d{2}/i => '%d %b - %y',
-        /#{months} \d{1,2},#{long_year}/i => '%b %d,%Y',
-    }
-    formats.each do |pattern, format|
-      data = string.match(pattern)
-      if data
-        begin
-          return Date.strptime(data[0], format)
-        rescue
-          return Chronic.parse(data[0]).try(:to_date)
-        end
-      end
-    end
-    false
-  end
-
-  def reject_patterns(string, patterns)
-    string.split("\n").reject(&:blank?).reject do |l|
-      patterns.collect { |p| l.match(p) }.join.present?
-    end.join("\n")
-  end
-
-  def tesseract(file)
-    bash %Q{tesseract "#{file}" stdout}
-  end
-
-  def bash(cmd)
-    `#{cmd}`.strip
   end
 
 end
