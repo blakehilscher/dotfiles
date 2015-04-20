@@ -2,6 +2,10 @@ class Zoho
   class Project
     class << self
 
+      def config
+        @config ||= load_config
+      end
+
       def open(project_name)
         project = Zoho::Project.find(project_name)
         Zoho.bash(%Q{open "https://invoice.zoho.com/app#/timesheet/projects/#{project.project_id}"})
@@ -26,6 +30,28 @@ class Zoho
 
       def all
         @all ||= Zoho::Request.new(endpoint: 'projects').get_ostruct(:projects)
+      end
+
+      private
+
+      def load_config
+        file = upsearch('.zoho')
+        if file
+          YAML.load(File.read(file)).symbolize_keys
+        else
+          {}
+        end
+      end
+
+      def upsearch(filename, path='./')
+        search_file = File.expand_path(File.join(path, filename))
+        if File.exist?(search_file)
+          search_file
+        elsif File.expand_path(path) == '/'
+          false
+        else
+          upsearch(filename, File.join(path, '../'))
+        end
       end
 
     end
