@@ -12,9 +12,13 @@ class CLI < Thor
 
   desc 'process', 'tessy process file1 file2 ...'
 
-  def process(*files)
-    Parallel.map(files, in_processes: 6) do |file|
-      Tessy::TessyFile.new(file).process
+  option :force, type: :boolean
+  option :dry, type: :boolean
+  option :verbose, type: :boolean, aliases: ['-v']
+
+  def process(*file_paths)
+    Parallel.map(file_paths, in_processes: 8) do |file_path|
+      Tessy::TessyFile.new(file_path, options).process
     end
   end
 
@@ -23,16 +27,24 @@ class CLI < Thor
   option :invalid, type: :boolean
   option :valid, type: :boolean
 
-  def check(*files)
-    files.each do |file_path|
-      file = Tessy::TessyFile.new(file_path)
-      message = file.check.collect { |key, value| "#{key} => #{value}\n" }.join + "\n----\n"
-      if options[:invalid]
-        puts message if file.date.blank?
-      elsif options[:valid]
-        puts message if file.date.present?
-      else
-        puts message
+  option :force, type: :boolean
+  option :dry, type: :boolean
+  option :verbose, type: :boolean, aliases: ['-v']
+
+  def check(glob)
+    files = Dir.glob(glob).to_a.flatten
+    Parallel.map(files, in_processes: 8) do |file_path|
+      file = Tessy::TessyFile.new(file_path, options)
+      check = file.check
+      if check.present?
+        message = check.collect { |key, value| "#{key} => #{value}\n" }.join + "\n----"
+        if options[:invalid]
+          puts message if file.date.blank?
+        elsif options[:valid]
+          puts message if file.date.present?
+        else
+          puts message
+        end
       end
     end
   end

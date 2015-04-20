@@ -2,6 +2,11 @@ class Zoho
   class Project
     class << self
 
+      def open(project_name)
+        project = Zoho::Project.find(project_name)
+        Zoho.bash(%Q{open "https://invoice.zoho.com/app#/timesheet/projects/#{project.project_id}"})
+      end
+
       def find(name)
         items = where(name)
         if items.count > 1
