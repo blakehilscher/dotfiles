@@ -1,9 +1,37 @@
 module CLI
-  class Time < Thor
-    namespace 'time'
+  class Timesheet < Thor
+    namespace 't'
 
     class_option :open, type: :boolean, aliases: '-o'
     class_option :notes, aliases: '-n'
+
+
+    desc 'list', 'List all projects'
+
+    def list
+      puts "Projects: "
+      puts Zoho::Project.all.collect { |p| "  #{p.project_name}\n" }.join
+    end
+
+
+    desc 'tasks PROJECT', "List a project's tasks"
+
+    option :project, aliases: '-p'
+
+    def tasks
+      project = Zoho::Project.find(project_name)
+      puts "Tasks for project: #{project.project_name}"
+      puts Zoho::Task.all(project.project_id).collect { |p| "  #{p.task_name}\n" }.join
+    end
+
+
+    desc 'open PROJECT', 'Open a project'
+
+    option :project, aliases: '-p'
+
+    def open
+      Zoho::Project.open(project_name)
+    end
 
 
     desc 'start [-p project_name] [-t task_name]', 'Start the timer. Default values: { project_name: Current working directory, task_name: Current git branch }'

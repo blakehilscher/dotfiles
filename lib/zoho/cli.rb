@@ -1,17 +1,16 @@
 require 'thor'
 
 require_relative './all.rb'
-require_relative './cli/project.rb'
-require_relative './cli/time.rb'
+require_relative './cli/timesheet.rb'
 
 module CLI
   class Base < Thor
 
-    desc "time SUBCOMMAND ...ARGS", "manage time"
-    subcommand "time", CLI::Time
+    desc "timesheet SUBCOMMAND", "manage timesheets"
+    subcommand "timesheet", CLI::Timesheet
 
-    desc "project SUBCOMMAND ...ARGS", "manage time"
-    subcommand "project", CLI::Project
+    desc "t SUBCOMMAND", "timesheet alias"
+    subcommand "t", CLI::Timesheet
 
   end
 end
