@@ -3,14 +3,12 @@ module CLI
     namespace 't'
 
     class_option :open, type: :boolean, aliases: '-o'
-    class_option :notes, aliases: '-n'
-
 
     desc 'list', 'List all projects'
 
     def list
-      puts "Projects: "
-      puts Zoho::Project.all.collect { |p| "  #{p.project_name}\n" }.join
+      puts "# Projects"
+      puts Zoho::Project.all.collect { |p| "#{p.project_name}\n" }.join
     end
 
 
@@ -20,8 +18,8 @@ module CLI
 
     def tasks
       project = Zoho::Project.find(project_name)
-      puts "Tasks for project: #{project.project_name}"
-      puts Zoho::Task.all(project.project_id).collect { |p| "  #{p.task_name}\n" }.join
+      puts "# Project: #{project.project_name}"
+      puts Zoho::Task.all(project.project_id).collect { |p| "#{p.task_name}\n" }.join
     end
 
 
@@ -38,6 +36,7 @@ module CLI
 
     option :project, aliases: '-p'
     option :task, type: :boolean, aliases: '-t'
+    option :notes, aliases: '-n'
 
     def start
       if task_name.blank?
