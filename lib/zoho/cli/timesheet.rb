@@ -30,7 +30,7 @@ module CLI
     end
 
 
-    desc 'start [-p project_name] [-t task_name] [-n "notes"]', 'Start the timer. Default values: { project_name: Current working directory, task_name: Current git branch }'
+    desc 'start [-T begin_time] [-p project_name] [-t task_name] [-n notes]', 'Start a project timer.'
     option :project, aliases: '-p'
     option :task, type: :boolean, aliases: '-t'
     option :notes, aliases: '-n'
@@ -55,7 +55,7 @@ module CLI
     end
 
 
-    desc 'log BEGIN_TIME', 'zoho log 2.hours.ago [-p project_name] [-t task_name] [-n "notes"]'
+    desc 'log BEGIN_TIME', 'zoho log 2.hours.ago [-p project_name] [-t task_name] [-n notes]'
     option :project, aliases: '-p'
     option :task, type: :boolean, aliases: '-t'
     option :notes, aliases: '-n'
