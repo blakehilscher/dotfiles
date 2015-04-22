@@ -9,7 +9,7 @@ def url_for_command(command)
   url = git_url.split(':').last.gsub('.git','').strip.rstrip
   
   case command.to_s.to_sym
-  when :pr        then "http://github.com/#{url}/compare/#{branch.gsub('/',';')}?expand=1"
+  when :pr        then "http://github.com/#{url}/compare/#{branch}?expand=1"
   when :pulls     then "http://github.com/#{url}/pulls"
   else 
     "http://github.com/#{url}/tree/#{branch}"

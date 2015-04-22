@@ -72,8 +72,8 @@ class Zoho
     def notes
       if attributes[:notes].present?
         attributes[:notes]
-      elsif attributes[:time].present? && attributes[:frequency].present?
-        Zoho.bash(%Q{git log --pretty=oneline --abbrev-commit --since="#{attributes[:time]} #{attributes[:frequency]} ago"})
+      elsif attributes[:begin_time].present?
+        Zoho.bash(%Q{git log --pretty=oneline --abbrev-commit --since="#{begin_time_amount} #{begin_time_frequency} ago"})
       end
     end
 
@@ -89,15 +89,22 @@ class Zoho
       @save
     end
 
+    def begin_time_amount
+      attributes[:begin_time].split('.')[0]
+    end
+
+    def begin_time_frequency
+      attributes[:begin_time].split('.')[1]
+    end
+
     private
 
     def resolve_begin_time
-      amount = attributes[:time]
-      frequency = attributes[:frequency]
-      if amount.blank? || frequency.blank?
-        Time.now
+      if attributes[:begin_time].present?
+        amount, frequency, starting = attributes[:begin_time].split('.')
+        amount.to_i.send(frequency).send(starting)
       else
-        amount.to_i.send(frequency).ago
+        1.minute.ago
       end
     end
 

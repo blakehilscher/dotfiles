@@ -12,8 +12,7 @@ module CLI
     end
 
 
-    desc 'tasks PROJECT', "List a project's tasks"
-
+    desc 'tasks [-p project_name]', "List a project's tasks"
     option :project, aliases: '-p'
 
     def tasks
@@ -24,7 +23,6 @@ module CLI
 
 
     desc 'open PROJECT', 'Open a project'
-
     option :project, aliases: '-p'
 
     def open
@@ -32,23 +30,18 @@ module CLI
     end
 
 
-    desc 'start [-p project_name] [-t task_name]', 'Start the timer. Default values: { project_name: Current working directory, task_name: Current git branch }'
-
+    desc 'start [-p project_name] [-t task_name] [-n "notes"]', 'Start the timer. Default values: { project_name: Current working directory, task_name: Current git branch }'
     option :project, aliases: '-p'
     option :task, type: :boolean, aliases: '-t'
     option :notes, aliases: '-n'
+    option :begin_time, aliases: '-T'
 
     def start
       if task_name.blank?
         puts 'task_name is blank. Is the current directory a git repository?'
       else
-        args = {
-          project: project_name,
-          task: task_name,
-          notes: options[:notes],
-          start_timer: true
-        }
-        Zoho::TimeEntry.new(args).save
+        params = timesheet_params.merge({ start_timer: true })
+        Zoho::TimeEntry.new(params).save
         open_project
       end
     end
@@ -57,35 +50,40 @@ module CLI
     desc 'stop', 'Stop the active timer'
 
     def stop
-      Zoho::TimeEntry.stop_timer(options)
+      Zoho::TimeEntry.stop_timer(timesheet_params)
       open_project
     end
 
 
-    desc 'log DURATION FREQUENCY', 'zoho log 2 hours [-p project_name] [-t task_name]'
-
+    desc 'log BEGIN_TIME', 'zoho log 2.hours.ago [-p project_name] [-t task_name] [-n "notes"]'
+    option :project, aliases: '-p'
+    option :task, type: :boolean, aliases: '-t'
     option :notes, aliases: '-n'
-    option :open, type: :boolean, aliases: '-o'
 
-    def log(time, frequency)
-      args = {
-        project: project_name,
-        task: task_name,
-        time: time,
-        frequency: frequency,
-        notes: options[:notes]
-      }
-      Zoho::TimeEntry.new(args).save
+    def log(begin_time)
+      params = timesheet_params.merge({ begin_time: begin_time })
+      Zoho::TimeEntry.new(params).save
     end
 
 
-    desc 'open', 'Open a project'
+    desc 'open [-p project_name]', 'Open a project'
+    option :project, aliases: '-p'
 
     def open
       Zoho::Project.open(project_name)
     end
 
+
     private
+
+    def timesheet_params
+      {
+        project: project_name,
+        task: task_name,
+        notes: options[:notes],
+        begin_time: options[:begin_time]
+      }
+    end
 
     def open_project
       Zoho::Project.open(project_name) if options[:open]

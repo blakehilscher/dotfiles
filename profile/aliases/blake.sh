@@ -23,9 +23,7 @@ function ssh-cp-all (){
   nt "aws-ssh twilio 1e";
 }
 
-alias z='zeus'
-
-alias zt='zoho time'
+alias z='zoho'
 
 function boot_cp (){
   goto -cc
