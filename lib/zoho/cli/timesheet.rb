@@ -30,6 +30,18 @@ module CLI
     end
 
 
+    desc 'commit [-T begin_time] [-p project_name] [-t task_name] [-n notes]', 'Stop current timer, save commits, and start a new timer.'
+    option :project, aliases: '-p'
+    option :task, type: :boolean, aliases: '-t'
+    option :notes, aliases: '-n'
+    option :begin_time, aliases: '-T'
+
+    def commit
+      stop
+      start
+    end
+
+
     desc 'start [-T begin_time] [-p project_name] [-t task_name] [-n notes]', 'Start a project timer.'
     option :project, aliases: '-p'
     option :task, type: :boolean, aliases: '-t'
@@ -55,7 +67,7 @@ module CLI
     end
 
 
-    desc 'log BEGIN_TIME', 'zoho log 2.hours.ago [-p project_name] [-t task_name] [-n notes]'
+    desc 'log BEGIN_TIME [-p project_name] [-t task_name] [-n notes]', 'Log an entry. EG: zoho log 2.hours.ago'
     option :project, aliases: '-p'
     option :task, type: :boolean, aliases: '-t'
     option :notes, aliases: '-n'
