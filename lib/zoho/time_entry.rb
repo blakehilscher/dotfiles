@@ -102,6 +102,9 @@ class Zoho
     def resolve_begin_time
       if attributes[:begin_time].present?
         amount, frequency, starting = attributes[:begin_time].split('.')
+        if amount.blank? || frequency.blank? || starting.blank?
+          raise ArgumentError.new("\n\nbegin_time must be formatted like:\n   amount.frequency.starting\neg:\n   60.minutes.ago\n\n")
+        end
         amount.to_i.send(frequency).send(starting)
       else
         1.minute.ago
