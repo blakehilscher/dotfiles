@@ -18,8 +18,11 @@ class Zoho
             puts update['message']
             puts notes
           end
+          Zoho.configuration.update(active_timesheet: '')
         end
+        response
       end
+      
     end
 
     attr_reader :attributes
@@ -36,7 +39,13 @@ class Zoho
         task: #{task.task_name}
         begin_time: #{begin_time.strftime("%I:%M %p")}\n\n}
       puts data[:notes] + "\n\n" if data[:notes].present?
-      puts Zoho::Request.new(endpoint: '/projects/timeentries').post(data)['message'] unless saved?
+      unless saved?
+        response = Zoho::Request.new(endpoint: '/projects/timeentries').post(data)
+        if response['code'] == 0
+          Zoho.configuration.update(active_timesheet: Dir.pwd)
+        end
+        puts response['message'] 
+      end
     end
 
     def payload

@@ -66,7 +66,6 @@ module CLI
       else
         params = timesheet_params.merge({ start_timer: true })
         Zoho::TimeEntry.new(params).save
-        Zoho.configuration.update(active_timesheet: Dir.pwd)
         open_project
       end
     end
@@ -79,7 +78,6 @@ module CLI
         Dir.chdir(Zoho.config[:active_timesheet]) do 
           puts "Stopping timer for: #{project_name}"
           Zoho::TimeEntry.stop_timer(timesheet_params)
-          Zoho.configuration.update(active_timesheet: '')
           open_project
         end
       else
