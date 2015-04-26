@@ -13,7 +13,11 @@ class Zoho
     attr_accessor :config
 
     def config
-      @config ||= Zoho::Config.new("#{ENV['HOME']}/.zoho").load
+      @config ||= configuration.load
+    end
+
+    def configuration
+      @configuration ||= Zoho::Config.new("#{ENV['HOME']}/.zoho")
     end
 
     def bash(c)

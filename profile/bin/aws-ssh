@@ -57,13 +57,16 @@ else
   servers = fetch_servers
   ARGV.each do |arg|
     matcher = arg.downcase
-    servers = servers.select { |s| s.match_name.match(matcher) || s.private_ip.match(arg) || s.ip.match(arg) }
+    servers = servers.select do |s| 
+      s.name == arg || s.private_ip.match(arg) || s.ip.match(arg) || s.match_name.match(matcher)
+    end
   end
   if servers.length == 1
     server = servers[0]
     puts "# connecting to #{server.name}"
     bash(%Q{ssh ubuntu@#{server.ip} -i #{ENV['HOME']}/.ssh/callpixels_deploy.pem})
   elsif servers.length > 1
+    
     puts "Multiple servers matched: #{ARGV.join(' ')}"
     puts servers.collect(&:title).join("\n")
   else

@@ -4,6 +4,18 @@ module CLI
 
     class_option :open, type: :boolean, aliases: '-o'
 
+
+    desc 'active', 'Output the active project'
+
+    def active
+      if Zoho.config[:active_timesheet].present?
+        puts Zoho.config[:active_timesheet]
+      else
+        puts "No active timesheet."
+      end
+    end
+
+
     desc 'list', 'List all projects'
 
     def list
@@ -54,6 +66,7 @@ module CLI
       else
         params = timesheet_params.merge({ start_timer: true })
         Zoho::TimeEntry.new(params).save
+        Zoho.configuration.update(active_timesheet: Dir.pwd)
         open_project
       end
     end
@@ -62,8 +75,16 @@ module CLI
     desc 'stop', 'Stop the active timer'
 
     def stop
-      Zoho::TimeEntry.stop_timer(timesheet_params)
-      open_project
+      if Zoho.config[:active_timesheet].present?
+        Dir.chdir(Zoho.config[:active_timesheet]) do 
+          puts "Stopping timer for: #{project_name}"
+          Zoho::TimeEntry.stop_timer(timesheet_params)
+          Zoho.configuration.update(active_timesheet: '')
+          open_project
+        end
+      else
+        puts "No active timesheet."
+      end
     end
 
 
