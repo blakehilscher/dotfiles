@@ -9,7 +9,7 @@ module CLI
 
     def active
       if Zoho.config[:active_timesheet].present?
-        puts Zoho.config[:active_timesheet]
+        describe_active_timesheet
       else
         puts "No active timesheet."
       end
@@ -61,7 +61,10 @@ module CLI
     option :begin_time, aliases: '-T'
 
     def start
-      if task_name.blank?
+      if Zoho.config[:active_timesheet].present?
+        puts "A project is already being timed."
+        describe_active_timesheet
+      elsif task_name.blank?
         puts 'task_name is blank. Is the current directory a git repository?'
       else
         params = timesheet_params.merge({ start_timer: true })
@@ -106,6 +109,10 @@ module CLI
 
 
     private
+
+    def describe_active_timesheet
+      Dir.chdir(Zoho.config[:active_timesheet]){ puts "project_name: #{project_name}\ntask_name: #{task_name}\ndirectory: #{Zoho.config[:active_timesheet]}" }
+    end
 
     def timesheet_params
       {
