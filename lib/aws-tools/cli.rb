@@ -12,6 +12,7 @@ module CLI
 
     option :debug, type: :boolean
     option :match, aliases: '-m', type: :array
+    option :exclude, aliases: '-e', type: :array
     option :identity, aliases: '-i'
     option :list, aliases: '-l', type: :boolean
 
@@ -34,7 +35,6 @@ module CLI
       # start processes
       Parallel.each(servers, in_threads: servers.count) do |server|
         Net::SSH.start(server.ip, user, keys: [identity]) do |ssh|
-          puts 'starting ssh'
           ssh.open_channel do |channel|
             channel.exec(command)
             channel.on_data do |c, data|
@@ -43,9 +43,6 @@ module CLI
             channel.on_extended_data do |c, type, data|
               $stderr.print data
             end
-            channel.on_close do |ch|
-              puts "channel is closing!"
-            end
             semaphore.synchronize { channels << channel }
           end
           semaphore.synchronize { sessions << ssh }
@@ -53,7 +50,6 @@ module CLI
       end
       # wait for termination
       channels.each do |c|
-        puts 'waiting'
         c.wait
       end
     end
@@ -85,6 +81,12 @@ module CLI
       options[:match].to_a.each do |arg|
         matcher = arg.downcase
         servers = servers.select do |s|
+          s.name == arg || s.private_ip.match(arg) || s.ip.match(arg) || s.match_name.match(matcher)
+        end
+      end
+      options[:exclude].to_a.each do |arg|
+        matcher = arg.downcase
+        servers = servers.reject do |s|
           s.name == arg || s.private_ip.match(arg) || s.ip.match(arg) || s.match_name.match(matcher)
         end
       end
