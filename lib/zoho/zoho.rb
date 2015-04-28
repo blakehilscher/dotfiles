@@ -22,8 +22,8 @@ module Zoho
     end
 
     def reload
-      remove_instance_variable('@config')
-      remove_instance_variable('@configuration')
+      remove_instance_variable('@config') if @config
+      remove_instance_variable('@configuration') if @configuration
     end
 
     def bash(c)

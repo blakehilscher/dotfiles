@@ -43,7 +43,7 @@ module Zoho
       end
 
 
-      desc 'commit [-T begin_time] [-p project_name] [-t task_name] [-n notes]', 'Stop current timer, save commits, and start a new timer.'
+      desc 'commit [-T begin_time] [-p project_name] [-t task_name] [-n notes]', 'Stop current timer, save commits, and start a new timer for the active timer.'
       option :project, aliases: '-p'
       option :task, type: :boolean, aliases: '-t'
       option :notes, aliases: '-n'
@@ -52,7 +52,21 @@ module Zoho
       def commit
         stop
         Zoho.reload
-        start
+        Dir.chdir(Zoho.config[:active_timesheet]){ start }
+      end
+
+
+      desc 'switch [-T begin_time] [-p project_name] [-t task_name] [-n notes]', 'Stop current timer, save commits, and start a new timer in the current directory.'
+      option :project, aliases: '-p'
+      option :task, type: :boolean, aliases: '-t'
+      option :notes, aliases: '-n'
+      option :begin_time, aliases: '-T'
+
+      def switch
+        original_directory = File.expand_path('.')
+        stop
+        Zoho.reload
+        Dir.chdir(original_directory){ start }
       end
 
 
