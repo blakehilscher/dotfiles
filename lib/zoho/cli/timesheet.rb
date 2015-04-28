@@ -130,15 +130,11 @@ module Zoho
       end
 
       def project_name
-        options[:project] || Zoho::Project.config[:project] || folder_basename
+        options[:project] || Zoho::Project.config[:project]
       end
 
       def task_name
         options[:task] || Zoho::Project.config[:task] || git_branch_name
-      end
-
-      def folder_basename
-        @folder_basename ||= File.basename(File.expand_path('.'))
       end
 
       def git_branch_name
