@@ -1,16 +1,11 @@
 require 'thor'
 
 require_relative './all.rb'
+
 require_relative './cli/timesheet.rb'
+require_relative './cli/base.rb'
 
-module CLI
-  class Base < Thor
-
-    desc "timesheet SUBCOMMAND", "manage timesheets"
-    subcommand "timesheet", CLI::Timesheet
-
-    desc "t SUBCOMMAND", "timesheet alias"
-    subcommand "t", CLI::Timesheet
-
+module Zoho
+  module CLI
   end
 end

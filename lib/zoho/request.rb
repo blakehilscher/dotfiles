@@ -1,7 +1,7 @@
 require 'ostruct'
 require 'httparty'
 
-class Zoho
+module Zoho
   class Request
 
     API_HOST = 'https://invoice.zoho.com/api/v3/'

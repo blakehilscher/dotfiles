@@ -1,4 +1,4 @@
-class Zoho
+module Zoho
   class Config
 
     attr_reader :config_path

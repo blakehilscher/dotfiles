@@ -1,4 +1,4 @@
-class Zoho
+module Zoho
   class TimeEntry
 
     class << self

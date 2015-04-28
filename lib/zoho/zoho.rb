@@ -7,7 +7,8 @@ require_relative './time_entry.rb'
 require_relative './project.rb'
 require_relative './task.rb'
 
-class Zoho
+
+module Zoho
   class << self
 
     attr_accessor :config
@@ -18,6 +19,11 @@ class Zoho
 
     def configuration
       @configuration ||= Zoho::Config.new("#{ENV['HOME']}/.zoho")
+    end
+
+    def reload
+      remove_instance_variable('@config')
+      remove_instance_variable('@configuration')
     end
 
     def bash(c)

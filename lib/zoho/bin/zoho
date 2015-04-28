@@ -4,4 +4,4 @@
 require_relative '../cli.rb'
 require "thor/runner"
 
-CLI::Base.start(ARGV)
+Zoho::CLI::Base.start(ARGV)
