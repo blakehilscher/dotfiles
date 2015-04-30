@@ -7,4 +7,4 @@ def bash(command)
 end
 branch = `git branch | grep '*'`.strip.rstrip.gsub('* ', '')
 
-bash "git pull origin #{branch}"
+bash "git pull --rebase origin #{branch}"

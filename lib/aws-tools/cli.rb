@@ -21,7 +21,7 @@ module CLI
         puts servers.collect(&:describe).join("\n")
       elsif command.present?
         ssh_command(command)
-      elsif options[:match].present?
+      elsif options[:match].present? || options[:exclude].present?
         ssh_connect
       end
     end
@@ -38,7 +38,7 @@ module CLI
           ssh.open_channel do |channel|
             channel.exec(command)
             channel.on_data do |c, data|
-              $stdout.print data
+              semaphore.synchronize { $stdout.print(data) }
             end
             channel.on_extended_data do |c, type, data|
               $stderr.print data

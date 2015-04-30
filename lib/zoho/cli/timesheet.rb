@@ -50,9 +50,10 @@ module Zoho
       option :begin_time, aliases: '-T'
 
       def commit
+        original_directory = Zoho.config[:active_timesheet]
         stop
         Zoho.reload
-        Dir.chdir(Zoho.config[:active_timesheet]){ start }
+        Dir.chdir(original_directory){ start }
       end
 
 
