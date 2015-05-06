@@ -78,10 +78,7 @@ module Zoho
       option :begin_time, aliases: '-T'
 
       def start
-        if Zoho.config[:active_timesheet].present?
-          puts "A project is already being timed."
-          describe_active_timesheet
-        elsif task_name.blank?
+        if task_name.blank?
           puts 'task_name is blank. Is the current directory a git repository?'
         else
           params = timesheet_params.merge({ start_timer: true })
