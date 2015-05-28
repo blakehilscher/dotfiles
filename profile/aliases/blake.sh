@@ -8,6 +8,8 @@ alias reload='source ~/.bash_profile'
 
 alias z='zoho'
 
+alias gallerize='gallerize_cli; rsync_photos -o'
+
 function boot_cp (){
   goto -cc
   bundle
@@ -15,9 +17,8 @@ function boot_cp (){
   sleep 0.5
   new_window "bundle exec rails server"
   newtab "bundle exec rails console"
-  newtab "bundle exec zeus start"
   newtab "bundle exec sidekiq -C config/sidekiq.yml"
-  newtab "tail -f log/sidekiq-development.log"
+  newtab "bin/number_pool_recycler"
   newtab "bundle exec rake sunspot:solr:start; clear; git status"
 }
 

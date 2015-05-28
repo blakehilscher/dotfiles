@@ -1,20 +1,22 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
-statement = ARGV.join(' ').split(" do ")
+file_pattern = ARGV[0]
+command = ARGV[1]
 
-if statement[0] =~ /,/
+def bash(c)
+  puts("#{File.expand_path('.')} $ #{c}")
+  system(c)
+end
 
-  args = statement.shift.split(',')
-  command = statement.join(" do ")
-
-  args.each do |arg|
-    begin
-      run = command.gsub("@1", arg)
-      puts run
-      system( "#{run} &" )
-    rescue => err
+if file_pattern.nil? || command.nil?
+  puts "foreach '**/*' 'ls' "
+else
+  Dir.glob(file_pattern).each do |path|
+    if File.directory?(path)
+      Dir.chdir(path) do
+        bash(command)
+      end
     end
   end
-  
 end

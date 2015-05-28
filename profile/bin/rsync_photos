@@ -25,4 +25,6 @@ remote_dir = config['remote_dir'] || File.basename(File.expand_path('.'))
 chdir(local_path) do |f|
   remote = File.join(remote_path, remote_dir)
   bash "rsync -avz . #{remote}"
+  `open "http://photos.hilscher.ca/#{remote_dir}"` if ARGV.find{|arg| arg == '-o' }
 end
+
