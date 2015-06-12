@@ -15,6 +15,7 @@ module CLI
     option :exclude, aliases: '-e', type: :array
     option :identity, aliases: '-i'
     option :list, aliases: '-l', type: :boolean
+    option :first, aliases: '-f', type: :boolean
 
     def ssh(command=nil)
       if options[:list]
@@ -29,6 +30,14 @@ module CLI
     private
 
     def ssh_command(command)
+      if options[:first]
+        ssh_command_single(command)
+      else
+        ssh_command_many(command)
+      end
+    end
+
+    def ssh_command_many(command)
       sessions = []
       channels = []
       semaphore = Mutex.new
@@ -52,6 +61,12 @@ module CLI
       channels.each do |c|
         c.wait
       end
+
+    end
+
+    def ssh_command_single(command)
+      server = servers.first
+      bash(%Q{ssh #{user}@#{server.ip} -i #{identity} "#{command}"})
     end
 
     def kill_processes(processes)
@@ -89,6 +104,9 @@ module CLI
         servers = servers.reject do |s|
           s.name == arg || s.private_ip.match(arg) || s.ip.match(arg) || s.match_name.match(matcher)
         end
+      end
+      if options[:first]
+        servers = [servers.first]
       end
       servers
     end

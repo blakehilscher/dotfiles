@@ -6,9 +6,9 @@ module Zoho
       class_option :open, type: :boolean, aliases: '-o'
 
 
-      desc 'active', 'Output the active project'
+      desc 'status', 'Output the active project'
 
-      def active
+      def status
         if Zoho.config[:active_timesheet].present?
           describe_active_timesheet
         else

@@ -3,6 +3,11 @@
 
 command = ARGV[0]
 
+def bash(c)
+  puts c
+  `#{c}`
+end 
+
 def url_for_command(command)
   git_url = `git config --get remote.origin.url`
   branch = `git branch | grep '*'`.gsub('* ','').strip.rstrip
@@ -10,13 +15,31 @@ def url_for_command(command)
   
   case command.to_s.to_sym
   when :pr        then "http://github.com/#{url}/compare/#{branch}?expand=1"
-  when :pulls     then "http://github.com/#{url}/pulls"
+  when :p     then "http://github.com/#{url}/pulls"
+  when :i     then "http://github.com/#{url}/issues"
+  when :b     then "http://github.com/#{url}/issues/new"
+  when :o     then "http://github.com/#{url}"
   else 
     "http://github.com/#{url}/tree/#{branch}"
   end
 end
 
-url = url_for_command(command)
+if !command
+  puts %Q{
+    USAGE:
 
-puts "open '#{url}'"
-`open '#{url}'`
+      github command
+
+
+    COMMANDS:
+      
+      o     open project
+      pr    new pull request
+      p     pull requests
+      i     issues
+      b     branches
+  }
+else
+  bash "open '#{url_for_command(command)}'"
+end
+
