@@ -18,7 +18,7 @@ rollback() {
     then
     steps=1;
   fi
-  echo "steps=$steps"
-  bundle exec rake db:rollback STEPS=$steps &
-  RAILS_ENV=test bundle exec rake db:rollback STEPS=$steps
+  echo "STEP=$steps"
+  bundle exec rake db:rollback STEP=$steps &
+  RAILS_ENV=test bundle exec rake db:rollback STEP=$steps
 }

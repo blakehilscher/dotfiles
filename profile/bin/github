@@ -1,14 +1,15 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
-command = ARGV[0]
-
 def bash(c)
   puts c
   `#{c}`
 end 
 
-def url_for_command(command)
+def url_for_command
+  command = ARGV[0]
+  path = ARGV[1]
+
   git_url = `git config --get remote.origin.url`
   branch = `git branch | grep '*'`.gsub('* ','').strip.rstrip
   url = git_url.split(':').last.gsub('.git','').strip.rstrip
@@ -18,13 +19,20 @@ def url_for_command(command)
   when :p     then "http://github.com/#{url}/pulls"
   when :i     then "http://github.com/#{url}/issues"
   when :b     then "http://github.com/#{url}/issues/new"
-  when :o     then "http://github.com/#{url}"
+  when :h     then "http://github.com/#{url}/commits/#{branch}/#{path}"
+  when :blame then "http://github.com/#{url}/blame/#{branch}/#{path}"
+  when :o     then
+    if !path
+      "http://github.com/#{url}/tree/#{branch}"
+    else
+      "http://github.com/#{url}/blob/#{branch}/#{path}"
+    end
   else 
     "http://github.com/#{url}/tree/#{branch}"
   end
 end
 
-if !command
+if !ARGV[0]
   puts %Q{
     USAGE:
 
@@ -40,6 +48,6 @@ if !command
       b     branches
   }
 else
-  bash "open '#{url_for_command(command)}'"
+  bash "open '#{url_for_command}'"
 end
 

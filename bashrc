@@ -1,5 +1,7 @@
 [[ -s "/etc/bashrc" ]] && . /etc/bashrc
 
+export HISTFILE="${HOME}/.history/$(date -u +%Y/%m/%d.%H.%M.%S)_${HOSTNAME_SHORT}_$$"
+
 export EDITOR=/usr/bin/vi
 export PATH=$PATH:$HOME/bin
 export PATH=/usr/local/bin:$PATH
