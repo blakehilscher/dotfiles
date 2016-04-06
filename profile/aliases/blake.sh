@@ -22,3 +22,5 @@ alias gh='github'
 
 alias gpge='gpg --encrypt --recipient blake@hilscher.ca '
 alias gpgd='gpg --decrypt '
+
+alias le='less -R'

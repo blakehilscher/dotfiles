@@ -1,14 +1,47 @@
+function brc (){
+  goto -cc
+  bundle exec rails console
+}
 
 function boot_cp (){
+  kill_cp
+  prepare_cp
+  start_cp
+}
+
+function restart_cp(){
+  kill_cp
+  start_cp
+}
+
+function kill_cp(){
   goto -cc
+
+  gkill rails
+  gkill sidekiq
+  gkill number_pool_recycler
+  gkill yard
+
+}
+
+function prepare_cp(){
+  gplb
   bundle
   migrate
   sleep 0.5
-  new_window "bundle exec rails server"
+}
+
+function start_cp(){
+  goto -cc
+
+  newtab "bundle exec rails server"
   newtab "bundle exec rails console"
-  newtab "bundle exec sidekiq -C config/sidekiq.yml"
-  newtab "bin/number_pool_recycler"
-  newtab "bundle exec rake sunspot:solr:start; clear; git status"
+
+  nohup bundle exec sidekiq -C config/sidekiq.yml &
+  nohup bundle exec RAILS_ENV=development bin/number_pool_recycler &
+  nohup yard server --reload &
+  nohup bundle exec rake sunspot:solr:start &
+
 }
 
 function ssh_cp(){

@@ -96,19 +96,25 @@ module CLI
       options[:match].to_a.each do |arg|
         matcher = arg.downcase
         servers = servers.select do |s|
-          s.name == arg || s.private_ip.match(arg) || s.ip.match(arg) || s.match_name.match(matcher)
+          ip_matcher = parse_ip(arg)
+          s.name == arg || s.private_ip.match(ip_matcher) || s.ip.match(ip_matcher) || s.match_name.match(matcher)
         end
       end
       options[:exclude].to_a.each do |arg|
         matcher = arg.downcase
         servers = servers.reject do |s|
-          s.name == arg || s.private_ip.match(arg) || s.ip.match(arg) || s.match_name.match(matcher)
+          ip_matcher = parse_ip(arg)
+          s.name == arg || s.private_ip.match(ip_matcher) || s.ip.match(ip_matcher) || s.match_name.match(matcher)
         end
       end
       if options[:first]
         servers = [servers.first]
       end
       servers
+    end
+
+    def parse_ip(arg)
+      arg.to_s.gsub('ip-','').gsub('-','.')
     end
 
     def newtab(c)

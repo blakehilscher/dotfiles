@@ -1,4 +1,5 @@
 alias tf='tail -f'
+alias tfd='tail -f log/* | grep DEBUG'
 
 # -> Prevents accidentally clobbering files.
 alias ssh='la ~/.ssh/id_rsa.pub; ssh '

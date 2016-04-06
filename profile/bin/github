@@ -21,6 +21,7 @@ def url_for_command
   when :b     then "http://github.com/#{url}/issues/new"
   when :h     then "http://github.com/#{url}/commits/#{branch}/#{path}"
   when :blame then "http://github.com/#{url}/blame/#{branch}/#{path}"
+  when :c     then "http://github.com/#{url}/compare/master...#{branch}" 
   when :o     then
     if !path
       "http://github.com/#{url}/tree/#{branch}"
