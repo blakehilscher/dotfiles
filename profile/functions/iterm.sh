@@ -24,7 +24,7 @@ select_pane_right(){
 split_pane_horizontal(){
 CURRENT_DIR=$(pwd)
 /usr/bin/osascript <<-EOF
-tell application "iTerm"
+tell application "iTerm2"
     activate current session
     tell (current terminal)
         tell application "System Events" to keystroke "d" using {command down, shift down}
@@ -41,7 +41,7 @@ write_iterm "$@"
 split_pane_vertical(){
 CURRENT_DIR=$(pwd)
 /usr/bin/osascript <<-EOF
-tell application "iTerm"
+tell application "iTerm2"
     activate current session
     tell (current terminal)
         tell application "System Events" to keystroke "d" using command down
@@ -58,7 +58,7 @@ write_iterm "$@"
 new_window(){
 CURRENT_DIR=$(pwd)
 /usr/bin/osascript <<-EOF
-tell application "iTerm"
+tell application "iTerm2"
      activate
      set myterm to (make new terminal)
      tell myterm
@@ -73,20 +73,7 @@ write_iterm "$@"
 }
 
 newtab(){
-CURRENT_DIR=$(pwd)
-/usr/bin/osascript <<-EOF
-tell application "iTerm"
-    make new terminal
-    tell the current terminal
-        activate current session
-        launch session "Default Session"
-        tell the last session
-            write text "cd ${CURRENT_DIR}"
-        end tell
-    end tell
-end tell
-EOF
-write_iterm "$@"
+  ttab eval "${1}"
 }
 
 write_iterm(){
@@ -107,7 +94,7 @@ fi
 
 tell_iterm(){
 /usr/bin/osascript <<-EOF
-tell application "iTerm"
+tell application "iTerm2"
     activate
     tell (current terminal)
         $1

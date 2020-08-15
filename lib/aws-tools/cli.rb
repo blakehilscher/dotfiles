@@ -14,17 +14,23 @@ module CLI
     option :match, aliases: '-m', type: :array
     option :exclude, aliases: '-e', type: :array
     option :identity, aliases: '-i'
+    option :command, aliases: '-c'
     option :list, aliases: '-l', type: :boolean
     option :first, aliases: '-f', type: :boolean
+    option :user, aliases: '-u'
 
-    def ssh(command=nil)
+    def ssh
+      command = options[:command]
       if options[:list]
         puts servers.collect(&:describe).join("\n")
       elsif command.present?
         ssh_command(command)
-      elsif options[:match].present? || options[:exclude].present?
+      elsif server_matcher.present? || options[:exclude].present?
         ssh_connect
       end
+    rescue => err
+      FileUtils.rm('/Users/blake/.aws/.describe-instances-cache') if File.exists?('/Users/blake/.aws/.describe-instances-cache')
+      raise err
     end
 
     private
@@ -83,7 +89,7 @@ module CLI
         log "# connecting to #{servers.count} servers"
         servers.each { |s| bin_bash newtab ssh_string(s.ip) }
       else
-        log "No servers matched: #{options[:match]}"
+        log "No servers matched: #{server_matcher}"
       end
     end
 
@@ -93,7 +99,7 @@ module CLI
 
     def resolve_servers
       servers = ec2.servers
-      options[:match].to_a.each do |arg|
+      server_matcher.to_a.each do |arg|
         matcher = arg.downcase
         servers = servers.select do |s|
           ip_matcher = parse_ip(arg)
@@ -121,8 +127,22 @@ module CLI
       %Q{newtab "#{c}"}
     end
 
+    def server_matcher
+      @server_matcher ||= resolve_server_matcher
+    end
+
+    def resolve_server_matcher
+      matcher = options[:match].to_a
+      if matcher[0] =~ /@/
+        parts = matcher[0].split('@')
+        @user = parts[0]
+        matcher[0] = parts[1]
+      end
+      matcher
+    end
+
     def ssh_string(ip, command=nil)
-      str = %Q{ssh #{user}@#{ip} -i #{identity}}
+      str = %Q{ssh #{user}@#{ip} -o "StrictHostKeyChecking no" -i #{identity}}
       str += %Q{ "#{command}"} if command.present?
       str
     end
@@ -136,11 +156,11 @@ module CLI
     end
 
     def user
-      options[:user] || 'ubuntu'
+      @user || options[:user] || ENV['AWS_USER'] || 'ubuntu'
     end
 
     def identity
-      options[:identity] || "#{ENV['HOME']}/.ssh/callpixels_deploy.pem"
+      options[:identity] || ENV['AWS_IDENTITY_PATH']
     end
 
     def bash_io(c)

@@ -17,7 +17,6 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 ln -sf $DIR/bash_profile $TARGET/.bash_profile
 ln -sf $DIR/bashrc $TARGET/.bashrc
 ln -sf $DIR/gemrc $TARGET/.gemrc
-ln -sf $DIR/vimrc $TARGET/.vimrc
 ln -sf $DIR/gitignore_global $TARGET/.gitignore_global
 cp -r $DIR/customize/ $TARGET/.customize_profile/
 

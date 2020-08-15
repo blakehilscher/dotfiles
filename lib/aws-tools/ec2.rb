@@ -35,7 +35,7 @@ module AwsTools
       # ensure dir exists
       FileUtils.mkdir_p(cache_path) unless Dir.exists?(cache_path)
       # ensure cache is recent
-      if File.exists?(cache_file) && File.ctime(cache_file) > 1.hour.ago
+      if File.exists?(cache_file) && File.ctime(cache_file) > 15.seconds.ago
         payload = File.read(cache_file)
       else
         payload = %x(aws ec2 describe-instances)
@@ -43,6 +43,9 @@ module AwsTools
       end
       # onwards
       JSON.parse(payload)
+    rescue
+      FileUtils.rm(cache_file) if File.exists?(cache_file)
+      raise 
     end
 
   end

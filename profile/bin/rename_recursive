@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+is_git = !!(`git rev-parse --is-inside-work-tree` =~ /true/)
+
+if ARGV.length < 2
+  puts "USAGE: rename_recursive JPG jpg"
+else
+  old_pattern = ARGV[0]
+  new_pattern = ARGV[1]
+
+  pattern = /#{old_pattern}/
+
+  Dir.glob('**/*').each do |path|
+    file_name = File.basename(path)
+    if file_name =~ pattern
+        paths = path.split('/')
+        paths.pop
+        paths = paths.join('/')
+        new_name = File.join(paths, file_name.gsub( pattern, new_pattern ).gsub('"','\"'))
+        old_name = File.join(paths, file_name.gsub('"','\"'))
+        command = %Q{mv "#{old_name}" "#{new_name}"}
+        command = "git #{command}" if is_git
+        puts "#{command}"
+        %x{#{command}}
+    end
+  end
+end

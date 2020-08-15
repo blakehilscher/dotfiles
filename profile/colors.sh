@@ -28,7 +28,7 @@ function proml {
     ;;
   esac
   
-  PS1="$LIGHT_GRAY\$(parse_git_branch)$GREEN\w$BLUE\n${TITLEBAR}$BLUE($BEFORE_PROMPT\u$AFTER_PROMPT$BLUE)$GREEN\$ "
+  PS1="$LIGHT_GRAY\$(parse_git_branch)$GREEN\w$BLUE${TITLEBAR}$GREEN\$ \[\033[0m\]"
   PS2='> '
   PS4='+ '
 }

@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+require 'json'
+require 'pry'
+
+arg1 = ARGV[0]
+
+if arg1.to_s.strip == ''
+  puts 'Please provide the name of the server, or --list'
+else
+  command = %Q{curl --silent --request GET --header "Content-Type: application/json" -H "Authorization: Bearer #{ENV['DIGITAL_OCEAN_TOKEN']}" "https://api.digitalocean.com/v2/droplets?per_page=200"}
+  data = JSON.parse(`#{command}`)
+
+  droplets = data['droplets'].select do |d|
+    ip = d['networks']['v4'].first['ip_address']
+ 
+    (ip == arg1) || d.any? do |key, value|
+      if value.is_a?(String) && value =~ /#{arg1}/
+        true
+      else
+        false
+      end
+    end
+  end
+
+  droplet = droplets.first
+
+  if droplet    
+    ip = droplet['networks']['v4'].first['ip_address']
+    puts droplet['name']
+    bash = %Q{ssh root@#{ip} -i #{ENV['AWS_IDENTITY_PATH']}}
+    puts bash
+    system(bash)
+  else
+    puts "nothing matched #{arg1}"
+  end
+end
+

@@ -28,3 +28,9 @@ PATH="/usr/local/quandl/bin:$PATH"
 export EDITOR=vim
 export PATH="$HOME/.rbenv/bin:$PATH"
 #eval "$(rbenv init -)"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+export PATH="/usr/local/opt/libxml2/bin:$PATH"
+
+export BASH_SILENCE_DEPRECATION_WARNING=1

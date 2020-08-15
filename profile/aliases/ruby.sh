@@ -3,13 +3,13 @@ alias b='bundle exec'
 alias lb='BUNDLE_LOCAL_GEMS=true bundle exec'
 alias br='bundle exec ruby'
 
-alias bspec='b rspec --color -f d'
+alias bspec='bundle exec rspec --color'
 alias lbspec='lb rspec --color -f d'
 
 alias bundle!='gem install bundler;bundle;'
 alias lbundle='BUNDLE_LOCAL_GEMS=true bundle'
-
-alias vmizuno='APP_ENV=vagrant mizuno'
+alias bz='bundle exec zeus'
+alias vmiuno='APP_ENV=vagrant mizuno'
 alias vrails='RAILS_ENV=vagrant rails'
 alias vrake='RAILS_ENV=vagrant rake'
 alias trake='RAILS_ENV=test rake'
