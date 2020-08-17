@@ -3,6 +3,7 @@ alias b='bundle exec'
 alias lb='BUNDLE_LOCAL_GEMS=true bundle exec'
 alias br='bundle exec ruby'
 
+alias pspec='bundle exec rake parallel:spec[8]'
 alias bspec='bundle exec rspec --color'
 alias lbspec='lb rspec --color -f d'
 
