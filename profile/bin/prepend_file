@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+prepend_with = ARGV.pop
+
+ARGV.each do |file_path|
+  contents = File.read(file_path)
+  contents = "#{prepend_with}\n#{contents}"
+  puts "prepending #{file_path} with #{prepend_with}"
+  File.write(file_path, "#{prepend_with}\n#{contents}")
+end
