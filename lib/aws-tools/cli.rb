@@ -83,11 +83,11 @@ module CLI
     end
 
     def ssh_connect
-      if servers.length == 1
+      if servers.length== 1
         bash ssh_string(servers[0].ip)
       elsif servers.length > 1
         log "# connecting to #{servers.count} servers"
-        servers.each { |s| bin_bash newtab ssh_string(s.ip) }
+        servers.each { |s| %x{ #{newtab(ssh_string(s.ip))} } }
       else
         log "No servers matched: #{server_matcher}"
       end
@@ -98,7 +98,7 @@ module CLI
     end
 
     def resolve_servers
-      servers = ec2.servers
+      servers = ec2.servers.select(&:running?)
       server_matcher.to_a.each do |arg|
         matcher = arg.downcase
         servers = servers.select do |s|
@@ -114,7 +114,7 @@ module CLI
         end
       end
       if options[:first]
-        servers = [servers.first]
+        servers = [servers.shuffle.first]
       end
       servers
     end
@@ -124,7 +124,7 @@ module CLI
     end
 
     def newtab(c)
-      %Q{newtab "#{c}"}
+      %Q{ttab '#{c}'}
     end
 
     def server_matcher

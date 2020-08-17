@@ -7,6 +7,10 @@ module AwsTools
       @instance = instance
     end
 
+    def running?
+      instance['State']['Name'] == 'running'
+    end
+
     def describe
       [ip, private_ip, name].join(' | ')
     end
