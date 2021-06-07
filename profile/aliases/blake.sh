@@ -8,6 +8,9 @@ alias reload='source ~/.bash_profile'
 
 alias z='zoho'
 
+alias fd2='displayplacer "id:92C57C59-8F64-B15D-024B-D7C7751D136B res:2560x1440 hz:60 color_depth:8 scaling:off origin:(0,0) degree:0" "id:B37C636E-0682-6AA5-84C9-8306EA3621AE res:2560x1440 hz:60 color_depth:8 scaling:off origin:(-2560,0) degree:0"'
+alias fd3='displayplacer "id:92C57C59-8F64-B15D-024B-D7C7751D136B res:2560x1440 hz:60 color_depth:8 scaling:off origin:(0,0) degree:0" "id:EC20DEFC-CCEB-F248-F09A-F2974161C28D res:1792x1120 hz:59 color_depth:4 scaling:on origin:(2560,73) degree:0" "id:B37C636E-0682-6AA5-84C9-8306EA3621AE res:2560x1440 hz:60 color_depth:8 scaling:off origin:(-2560,-108) degree:0"'
+
 alias gallerize='gallerize_cli; rsync_photos -o'
 
 function encrypt(){
@@ -30,6 +33,8 @@ alias find_ips="grep -R -E -o '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|
 
 alias rmds_store="find . -name '*.DS_Store' -type f -delete"
 
+
+alias asshall='aws-tools ssh -m "portal|tel|sms|rpc"'
 
 function restart_rails(){
   goto -rails

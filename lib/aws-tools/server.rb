@@ -15,6 +15,10 @@ module AwsTools
       [ip, private_ip, name].join(' | ')
     end
 
+    def ssh_user
+      tags['ssh_user']
+    end
+
     def ip
       instance['PublicIpAddress']
     end
@@ -24,7 +28,18 @@ module AwsTools
     end
 
     def name
-      instance['Tags'].find { |t| t['Key'] == 'Name' }['Value'] rescue ''
+      tags['Name']
+    end
+
+    def tags
+      unless instance_variable_defined?(:@tags)
+        output = {}.with_indifferent_access
+        instance['Tags'].each do |item|
+          output[item['Key']] = item['Value']
+        end
+        @tags = output
+      end
+      @tags
     end
 
     def match_name

@@ -71,7 +71,7 @@ module CLI
     end
 
     def ssh_command_single(command)
-      server = servers.first
+      server = servers.shuffle.first
       bash(%Q{ssh #{user}@#{server.ip} -i #{identity} "#{command}"})
     end
 
@@ -84,10 +84,11 @@ module CLI
 
     def ssh_connect
       if servers.length== 1
-        bash ssh_string(servers[0].ip)
+        server = servers[0]
+        bash ssh_string(server.ip, user: server.ssh_user)
       elsif servers.length > 1
         log "# connecting to #{servers.count} servers"
-        servers.each { |s| %x{ #{newtab(ssh_string(s.ip))} } }
+        servers.each { |s| %x{ #{newtab(ssh_string(s.ip, user: s.ssh_user))} } }
       else
         log "No servers matched: #{server_matcher}"
       end
@@ -141,8 +142,9 @@ module CLI
       matcher
     end
 
-    def ssh_string(ip, command=nil)
-      str = %Q{ssh #{user}@#{ip} -o "StrictHostKeyChecking no" -i #{identity}}
+    def ssh_string(ip, options={})
+      command = options[:command]
+      str = %Q{ssh #{options[:user] || user}@#{ip} -o "StrictHostKeyChecking no" -i #{identity}}
       str += %Q{ "#{command}"} if command.present?
       str
     end
